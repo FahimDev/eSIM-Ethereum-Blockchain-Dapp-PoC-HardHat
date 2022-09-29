@@ -68,7 +68,9 @@ To test the network with `Ropsten` and `Alchemy` API
     npx hardhat deploy scripts/deploy.js --network ropsten
 
 
+# Guide
 
+For coding style and conventions we will follow the [official Solidity style guide][solidity-style-guide].
 
 # Cite:
 * https://docs.soliditylang.org/en/v0.8.17/introduction-to-smart-contracts.html#the-ethereum-virtual-machine
@@ -80,8 +82,11 @@ To test the network with `Ropsten` and `Alchemy` API
 * https://www.youtube.com/watch?v=T9kYuBcOnjI
 * https://ensarseker1.medium.com/is-more-secure-and-stable-communication-possible-by-using-blockchain-technology-for-esim-b99225ec4675
 * https://github.com/NomicFoundation/hardhat/issues/3201
+* https://www.gemini.com/cryptopedia/what-is-a-liquidity-pool-crypto-market-liquidity
+* https://docs.soliditylang.org/en/v0.8.14/style-guide.html
+* https://hackernoon.com/hacking-solidity-contracts-using-txorigin-for-authorization-are-vulnerable-to-phishing
 
-
+[solidity-style-guide]: https://docs.soliditylang.org/en/v0.8.14/style-guide.html
 [hardhat-version-issue]: https://github.com/NomicFoundation/hardhat/issues/3201
 [ibm-video]: https://www.youtube.com/watch?v=T9kYuBcOnjI/
 [bs23]: https://brainstation-23.com/?bc
