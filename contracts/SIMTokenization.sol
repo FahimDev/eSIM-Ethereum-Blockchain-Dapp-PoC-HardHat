@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0 <0.9.0;
 
+// For debugging
+import "hardhat/console.sol";
+
 contract SIMTokenization {
     string public name = "Bangladesh Telecommunications Company Limited-Token";
     string public symbol = "BTCL-T";
@@ -23,8 +26,17 @@ contract SIMTokenization {
 
     function transfer(address to, uint256 amount) external {
         require(balances[msg.sender] >= amount, "Not Enough Token!");
+        console.log(
+            "==> DEBUG: Sender balance is %s tokens.",
+            balances[msg.sender]
+        );
+        console.log("==> DEBUG: Sending %s tokens to %s .......", amount, to);
         balances[msg.sender] -= amount;
         balances[to] += amount;
+        console.log(
+            "==> DEBUG: Sender current balance is %s tokens.",
+            balances[msg.sender]
+        );
     }
 
     function balanceOf(address account) external view returns (uint256) {
