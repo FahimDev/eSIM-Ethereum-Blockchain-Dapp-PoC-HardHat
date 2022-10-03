@@ -2,7 +2,7 @@ const { expect } = require("chai");
 
 describe("SIMTokenization Contract", function () {
   let SIMTokenization;
-  let hardhatToken;
+  let simTokenization;
   let owner;
   let addressOne;
   let addressTwo;
@@ -15,17 +15,17 @@ describe("SIMTokenization Contract", function () {
     [owner, addressOne, addressTwo, ...addressThree] =
       await ethers.getSigners();
     // Deploying Contract
-    hardhatToken = await SIMTokenization.deploy();
+    simTokenization = await SIMTokenization.deploy();
   });
 
   describe("Contract Deployment", function () {
     it("It should set the right owner", async function () {
       console.log("Owner Address: ", owner.address);
-      expect(await hardhatToken.owner()).to.equal(owner.address);
+      expect(await simTokenization.owner()).to.equal(owner.address);
     });
     it("Should assign the total supply of the tokens to the owner", async function () {
-      const ownerBalance = await hardhatToken.balanceOf(owner.address);
-      expect(await hardhatToken.totalSupply()).to.equal(ownerBalance);
+      const ownerBalance = await simTokenization.balanceOf(owner.address);
+      expect(await simTokenization.totalSupply()).to.equal(ownerBalance);
       console.log("Owner Balance: ", ownerBalance);
     });
   });
@@ -35,22 +35,22 @@ describe("SIMTokenization Contract", function () {
       const distributionOne = 10;
       const distributionTwo = 5;
       // Owner account to AddressOne transaction
-      await hardhatToken.transfer(addressOne.address, distributionOne);
-      const addrOneBalance = await hardhatToken.balanceOf(addressOne.address);
+      await simTokenization.transfer(addressOne.address, distributionOne);
+      const addrOneBalance = await simTokenization.balanceOf(addressOne.address);
       expect(addrOneBalance).to.equal(distributionOne);
       // AddressOne account to AddressTwo transaction
-      await hardhatToken
+      await simTokenization
         .connect(addressOne)
         .transfer(addressTwo.address, distributionTwo);
-      const addrTwoBalance = await hardhatToken.balanceOf(addressTwo.address);
+      const addrTwoBalance = await simTokenization.balanceOf(addressTwo.address);
       expect(addrTwoBalance).to.equal(distributionTwo);
     });
 
     it("Should fail if sender does not have enough tokens", async function () {
-      const initialOwnerBalance = await hardhatToken.balanceOf(owner.address);
+      const initialOwnerBalance = await simTokenization.balanceOf(owner.address);
       // Ref: https://ethereum-waffle.readthedocs.io/en/latest/matchers.html
       await expect(
-        hardhatToken.connect(addressOne).transfer(owner.address, 6)
+        simTokenization.connect(addressOne).transfer(owner.address, 6)
       ).to.be.revertedWith("Not Enough Token!");
     });
   });
