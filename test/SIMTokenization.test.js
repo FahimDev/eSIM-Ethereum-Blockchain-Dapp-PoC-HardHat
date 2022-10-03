@@ -1,5 +1,9 @@
 const { expect } = require("chai");
-import {deployMockContract} from '@ethereum-waffle/mock-contract';
+const { utils, Contract } = require("ethers");
+const { MockProvider } = require("ethereum-waffle");
+const {
+  SIMTokenizationJSON,
+} = require("../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 
 // Moking Ref: https://github.com/TrueFiEng/Waffle/blob/master/examples/mock-contracts/test/AmIRichAlready.test.ts
 describe("SIMTokenization Contract", function () {
@@ -9,6 +13,9 @@ describe("SIMTokenization Contract", function () {
   let addressOne;
   let addressTwo;
   let addressThree;
+
+  // Mocking Wallet
+  const [wallet, otherWallet] = new MockProvider().getWallets();
 
   // Mocha Framework | Ref: https://mochajs.org/
   // beforeEach gets executed before each it() section.
@@ -21,10 +28,10 @@ describe("SIMTokenization Contract", function () {
     simTokenization = await SIMTokenization.deploy();
 
     console.log("========Test Account Address========");
-    console.log("Address Owner: ",owner.address);
-    console.log("Address One: ",addressOne.address);
-    console.log("Address Two: ",addressTwo.address);
-    console.log("Address Three: ",addressThree.address);
+    console.log("Address Owner: ", owner.address);
+    console.log("Address One: ", addressOne.address);
+    console.log("Address Two: ", addressTwo.address);
+    console.log("Address Three: ", addressThree.address);
     console.log("========Test Account Address========\n\n\n");
   });
 
@@ -93,8 +100,11 @@ describe("SIMTokenization Contract", function () {
     });
 
     it("Should fail if the sender is not actual owner", async function () {
-      console.log("Should Fail ==> Contract Current Owner Address: ", await simTokenization.owner());
-      console.log("Should Fail: Sending Request with: ",addressTwo.address);
+      console.log(
+        "Should Fail ==> Contract Current Owner Address: ",
+        await simTokenization.owner()
+      );
+      console.log("Should Fail: Sending Request with: ", addressTwo.address);
       await expect(
         simTokenization.connect(addressTwo).changeOwnership(addressOne.address)
       ).to.be.revertedWith("Not Owner");
