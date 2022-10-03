@@ -36,22 +36,50 @@ describe("SIMTokenization Contract", function () {
       const distributionTwo = 5;
       // Owner account to AddressOne transaction
       await simTokenization.transfer(addressOne.address, distributionOne);
-      const addrOneBalance = await simTokenization.balanceOf(addressOne.address);
+      const addrOneBalance = await simTokenization.balanceOf(
+        addressOne.address
+      );
       expect(addrOneBalance).to.equal(distributionOne);
       // AddressOne account to AddressTwo transaction
       await simTokenization
         .connect(addressOne)
         .transfer(addressTwo.address, distributionTwo);
-      const addrTwoBalance = await simTokenization.balanceOf(addressTwo.address);
+      const addrTwoBalance = await simTokenization.balanceOf(
+        addressTwo.address
+      );
       expect(addrTwoBalance).to.equal(distributionTwo);
     });
 
     it("Should fail if sender does not have enough tokens", async function () {
-      const initialOwnerBalance = await simTokenization.balanceOf(owner.address);
+      const initialOwnerBalance = await simTokenization.balanceOf(
+        owner.address
+      );
       // Ref: https://ethereum-waffle.readthedocs.io/en/latest/matchers.html
       await expect(
         simTokenization.connect(addressOne).transfer(owner.address, 6)
       ).to.be.revertedWith("Not Enough Token!");
+    });
+  });
+
+  describe("Change Ownership", function () {
+    it("Should set a new contract owner", async function () {
+      console.log(
+        "UNIT TEST ==> Sending proposed owner address: ",
+        addressOne.address
+      );
+      console.log(
+        "UNIT TEST ==> Contract's current owner address: ",
+        await simTokenization.owner()
+      );
+      console.log("UNIT TEST ==> Executing changeOwnership method....");
+      // Updating ownership of a contract
+      await simTokenization.changeOwnership(addressOne.address);
+      console.log(
+        "UNIT TEST ==> Contracts updated owner address: ",
+        await simTokenization.owner()
+      );
+      // Checking current ownership address and proposed owner address are equal or not.
+      expect(await simTokenization.owner()).to.equal(addressOne.address);
     });
   });
 });
