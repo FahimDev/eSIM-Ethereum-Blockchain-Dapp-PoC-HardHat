@@ -1,5 +1,7 @@
 const { expect } = require("chai");
+import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
+// Moking Ref: https://github.com/TrueFiEng/Waffle/blob/master/examples/mock-contracts/test/AmIRichAlready.test.ts
 describe("SIMTokenization Contract", function () {
   let SIMTokenization;
   let simTokenization;
@@ -9,6 +11,7 @@ describe("SIMTokenization Contract", function () {
   let addressThree;
 
   // Mocha Framework | Ref: https://mochajs.org/
+  // beforeEach gets executed before each it() section.
   beforeEach(async function () {
     // Creating Instance
     SIMTokenization = await ethers.getContractFactory("SIMTokenization");
