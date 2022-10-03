@@ -1,9 +1,8 @@
 const { expect } = require("chai");
 const { utils, Contract } = require("ethers");
+const {deployMockContract} = require("ethereum-waffle");
 const { MockProvider } = require("ethereum-waffle");
-const {
-  SIMTokenizationJSON,
-} = require("../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
+const SIMTokenizationJSON = require("../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 
 // Moking Ref: https://github.com/TrueFiEng/Waffle/blob/master/examples/mock-contracts/test/AmIRichAlready.test.ts
 describe("SIMTokenization Contract", function () {
@@ -14,6 +13,7 @@ describe("SIMTokenization Contract", function () {
   let addressTwo;
   let addressThree;
 
+  let MockSIMTokenization;
   // Mocking Wallet
   const [wallet, otherWallet] = new MockProvider().getWallets();
 
@@ -26,6 +26,10 @@ describe("SIMTokenization Contract", function () {
       await ethers.getSigners();
     // Deploying Contract
     simTokenization = await SIMTokenization.deploy();
+
+    // Mocking in progress......
+    let abiData = JSON.stringify(SIMTokenizationJSON.abi);
+    MockSIMTokenization = await deployMockContract(wallet, abiData);
 
     console.log("========Test Account Address========");
     console.log("Address Owner: ", owner.address);
