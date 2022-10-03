@@ -12,7 +12,6 @@ contract SIMTokenization {
      * When we are declearing a Public varaible in Solidity
      * by default a Getter Method is created.
      */
-
     address public owner;
     // Map of how many tokens owned by each addresses are noted as Balance.
     mapping(address => uint256) balances;
@@ -22,6 +21,19 @@ contract SIMTokenization {
         balances[msg.sender] = totalSupply;
         // And the owner will be the contract creator himself.
         owner = msg.sender;
+    }
+
+    /**
+     * Function modifiers are used to change or
+     * restrict the behavior of a function in a smart contract.
+     * */  
+    // Modifier Naming Ref: https://docs.soliditylang.org/en/v0.8.16/style-guide.html#modifier-names
+    modifier onlyOwner() {
+        console.log("==> DEBUG: Request Sender (modifier) : %s <==", msg.sender);
+        // We are using 'Require' to save Gas by preventing unnecessary method execution.
+        require(msg.sender == owner, "Not Owner");
+        // If require is true then proceed to next operations.
+        _;
     }
 
     /**
@@ -57,7 +69,9 @@ contract SIMTokenization {
             balances[msg.sender]
         );
         console.log("==> DEBUG: Sending %s tokens to %s .......", _amount, _to);
+        // Updating mapped key's value.
         balances[msg.sender] -= _amount;
+        // Creating new Key and assigning its value. (Mapping)
         balances[_to] += _amount;
         console.log(
             "==> DEBUG: Sender current balance is %s tokens.",
