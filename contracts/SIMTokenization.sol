@@ -24,6 +24,32 @@ contract SIMTokenization {
         owner = msg.sender;
     }
 
+    /**
+     * Ref: https://medium.com/coinmonks/gas-cost-of-solidity-library-functions-dbe0cedd4678
+     * External is Gas Efficient. Only be called from outside.​
+     * We can use Public Function but can not use External Function in the same Contract.
+     */
+    function changeOwnership(address _newOwnerAddress)
+        external
+        returns (string memory)
+    {
+        require _newOwnerAddress != address(0), "Invalid Address");
+        string memory ownerChangeMsg;
+        console.log(
+            "==> DEBUG: Proposed ownership address : %s <==",
+         _newOwnerAddress
+        );
+        console.log("==> DEBUG: Current ownership address: %s <==", owner);
+        owner = _newOwnerAddress;
+        console.log("==> DEBUG: Updated ownership address: %s <==", owner);
+        // Ternary Operator
+        ownerChangeMsg = owner == _newOwnerAddress
+            ? "Owner Changed!"
+            : "Someting went wrong!";
+        console.log("==> DEBUG: Return String: %s <==", ownerChangeMsg);
+        return ownerChangeMsg;
+    }
+
     function transfer(address _to, uint256 _amount) external {
         require(balances[msg.sender] >= _amount, "Not Enough Token!");
         console.log(
