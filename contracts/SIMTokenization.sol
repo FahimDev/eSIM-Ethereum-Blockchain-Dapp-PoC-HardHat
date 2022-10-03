@@ -46,7 +46,7 @@ contract SIMTokenization {
         onlyOwner
         returns (string memory)
     {
-        require _newOwnerAddress != address(0), "Invalid Address");
+        require (_newOwnerAddress != address(0), "Invalid Address");
         string memory ownerChangeMsg;
         console.log(
             "==> DEBUG: Proposed ownership address : %s <==",
