@@ -12,7 +12,7 @@ Full video presentation by IBM is available at [Youtube][ibm-video].
 
 # Abstract
 
-This project is a PoC-level public blockchain technology-based solution on eSIM. This project will cover a basic overview of eSIM functionality scopes. Generally, we will cover the Administration level eSIM token distribution according to the imported/manufactured phone's IMEI number at the telecommunications service provider level. Then we will cover this telecommunication operator handling these tokens nationally and globally at the consumer level. Here we will also cover how the operators will take cross-service provider operations with a single pass. Then we will cover how the IoT devices interact with the device owners, how their networks are operating with the eSIM, and how a single owner of multiple IoT devices can be identified with a web3 token with Fractional Ownership and can gain gas cost efficiency.
+This project is a PoC-level public blockchain technology-based solution on eSIM. This project will cover a basic overview of eSIM functionality scopes. Generally, we will cover from the Administration level, in which eSIM identity will be tokenized and distributed according to the imported/manufactured phone's IMEI number. Then we will cover from the telecommunication mobile network operator's perspective. Where network operator's MNO-Communication-Profile can be easily managed from the consumer level by mapping with the eSIM identity. In here we can manage an immutable ledger of Consumer's mobile network switching records to keep track of security and monetary purpose. After that, we will cover how the IoT devices interact with the device owners (Consumer SIM and M2M SIM), how their networks are operating with the eSIM, and how a single owner of multiple IoT devices can be identified with a web3 token with Fractional Ownership with maximum gas cost efficiency.
 
 ---
 
@@ -85,6 +85,8 @@ For coding style and conventions we will follow the [official Solidity style gui
 * https://www.gemini.com/cryptopedia/what-is-a-liquidity-pool-crypto-market-liquidity
 * https://docs.soliditylang.org/en/v0.8.14/style-guide.html
 * https://hackernoon.com/hacking-solidity-contracts-using-txorigin-for-authorization-are-vulnerable-to-phishing
+* https://cryptomarketpool.com/data-types-in-solidity-smart-contracts/
+* https://medium.com/coinmonks/gas-optimization-in-solidity-part-i-variables-9d5775e43dde
 
 [solidity-style-guide]: https://docs.soliditylang.org/en/v0.8.14/style-guide.html
 [hardhat-version-issue]: https://github.com/NomicFoundation/hardhat/issues/3201
