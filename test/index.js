@@ -16,6 +16,13 @@ describe("SIMTokenization Contract", function () {
       await ethers.getSigners();
     // Deploying Contract
     simTokenization = await SIMTokenization.deploy();
+
+    console.log("========Test Account Address========");
+    console.log("Address Owner: ",owner.address);
+    console.log("Address One: ",addressOne.address);
+    console.log("Address Two: ",addressTwo.address);
+    console.log("Address Three: ",addressThree.address);
+    console.log("========Test Account Address========\n\n\n");
   });
 
   describe("Contract Deployment", function () {
@@ -80,6 +87,14 @@ describe("SIMTokenization Contract", function () {
       );
       // Checking current ownership address and proposed owner address are equal or not.
       expect(await simTokenization.owner()).to.equal(addressOne.address);
+    });
+
+    it("Should fail if the sender is not actual owner", async function () {
+      console.log("Should Fail ==> Contract Current Owner Address: ", await simTokenization.owner());
+      console.log("Should Fail: Sending Request with: ",addressTwo.address);
+      await expect(
+        simTokenization.connect(addressTwo).changeOwnership(addressOne.address)
+      ).to.be.revertedWith("Not Owner");
     });
   });
 });
