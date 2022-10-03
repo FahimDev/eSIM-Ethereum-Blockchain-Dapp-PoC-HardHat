@@ -24,22 +24,22 @@ contract SIMTokenization {
         owner = msg.sender;
     }
 
-    function transfer(address to, uint256 amount) external {
-        require(balances[msg.sender] >= amount, "Not Enough Token!");
+    function transfer(address _to, uint256 _amount) external {
+        require(balances[msg.sender] >= _amount, "Not Enough Token!");
         console.log(
             "==> DEBUG: Sender balance is %s tokens.",
             balances[msg.sender]
         );
-        console.log("==> DEBUG: Sending %s tokens to %s .......", amount, to);
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
+        console.log("==> DEBUG: Sending %s tokens to %s .......", _amount, _to);
+        balances[msg.sender] -= _amount;
+        balances[_to] += _amount;
         console.log(
             "==> DEBUG: Sender current balance is %s tokens.",
             balances[msg.sender]
         );
     }
 
-    function balanceOf(address account) external view returns (uint256) {
-        return balances[account];
+    function balanceOf(address _account) external view returns (uint256) {
+        return balances[_account];
     }
 }
