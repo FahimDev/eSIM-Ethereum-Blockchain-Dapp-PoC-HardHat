@@ -43,6 +43,7 @@ contract SIMTokenization {
      */
     function changeOwnership(address _newOwnerAddress)
         external
+        onlyOwner
         returns (string memory)
     {
         require _newOwnerAddress != address(0), "Invalid Address");
