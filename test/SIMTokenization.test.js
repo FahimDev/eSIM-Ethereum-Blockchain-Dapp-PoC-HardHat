@@ -1,7 +1,8 @@
 const { expect } = require("chai");
-const { utils, Contract } = require("ethers");
-const {deployMockContract} = require("ethereum-waffle");
-const { MockProvider } = require("ethereum-waffle");
+// Importing Waffle's functions from ethereum-waffle, can lead to multiple problems. Ref: https://hardhat.org/hardhat-runner/docs/other-guides/waffle-testing#adapting-the-tests
+const { waffle } = require("hardhat");
+const { deployMockContract } = waffle;
+
 const SIMTokenizationJSON = require("../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 
 // Moking Ref: https://github.com/TrueFiEng/Waffle/blob/master/examples/mock-contracts/test/AmIRichAlready.test.ts
@@ -12,10 +13,7 @@ describe("SIMTokenization Contract", function () {
   let addressOne;
   let addressTwo;
   let addressThree;
-
-  let MockSIMTokenization;
-  // Mocking Wallet
-  const [wallet, otherWallet] = new MockProvider().getWallets();
+  let MockResearch;
 
   // Mocha Framework | Ref: https://mochajs.org/
   // beforeEach gets executed before each it() section.
@@ -27,9 +25,13 @@ describe("SIMTokenization Contract", function () {
     // Deploying Contract
     simTokenization = await SIMTokenization.deploy();
 
-    // Mocking in progress......
+    // For Future R&D
     let abiData = JSON.stringify(SIMTokenizationJSON.abi);
-    MockSIMTokenization = await deployMockContract(wallet, abiData);
+    let abiBytecode = JSON.stringify(SIMTokenizationJSON.bytecode);
+    const provider = waffle.provider;
+    const wallets = provider.getWallets();
+    const balance = await wallets[0].getBalance();
+    MockResearch =await deployMockContract(owner, abiData);
 
     console.log("========Test Account Address========");
     console.log("Address Owner: ", owner.address);
@@ -112,6 +114,17 @@ describe("SIMTokenization Contract", function () {
       await expect(
         simTokenization.connect(addressTwo).changeOwnership(addressOne.address)
       ).to.be.revertedWith("Not Owner");
+    });
+
+    it("Mock R&D", async function () {
+      // Owner account to AddressOne transaction (MOCK)
+      const mockResearch = await MockResearch.mock.transfer.withArgs(addressOne.address, 5).reverts();
+      const addrOneBalance = await simTokenization.balanceOf(
+        owner.address
+      );
+      //const mockResearch = await MockResearch.mock.balanceOf.withArgs(owner.address).reverts();
+      console.log(mockResearch)
+      //expect(await MockResearch.mock.balanceOf.withArgs(owner.address).reverts()).to.equal(100);
     });
   });
 });
