@@ -4,7 +4,8 @@
   "description": "**A PoC Project on Public Blockchain Network**",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "waffle"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.1",
-    "hardhat": "^2.9.9"
+    "hardhat": "^2.9.9",
+    "mocha": "^10.0.0"
   }
 }
