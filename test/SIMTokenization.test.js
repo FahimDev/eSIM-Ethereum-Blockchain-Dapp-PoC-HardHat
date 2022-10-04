@@ -1,8 +1,5 @@
 const { expect } = require("chai");
 // Importing Waffle's functions from ethereum-waffle, can lead to multiple problems. Ref: https://hardhat.org/hardhat-runner/docs/other-guides/waffle-testing#adapting-the-tests
-const { waffle } = require("hardhat");
-const { deployMockContract } = waffle;
-
 const SIMTokenizationJSON = require("../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 
 // Moking Ref: https://github.com/TrueFiEng/Waffle/blob/master/examples/mock-contracts/test/AmIRichAlready.test.ts
@@ -13,7 +10,6 @@ describe("SIMTokenization Contract", function () {
   let addressOne;
   let addressTwo;
   let addressThree;
-  let MockResearch;
 
   // Mocha Framework | Ref: https://mochajs.org/
   // beforeEach gets executed before each it() section.
@@ -28,10 +24,6 @@ describe("SIMTokenization Contract", function () {
     // For Future R&D
     let abiData = JSON.stringify(SIMTokenizationJSON.abi);
     let abiBytecode = JSON.stringify(SIMTokenizationJSON.bytecode);
-    const provider = waffle.provider;
-    const wallets = provider.getWallets();
-    const balance = await wallets[0].getBalance();
-    MockResearch =await deployMockContract(owner, abiData);
 
     console.log("========Test Account Address========");
     console.log("Address Owner: ", owner.address);
@@ -59,17 +51,24 @@ describe("SIMTokenization Contract", function () {
       const distributionTwo = 5;
       // Owner account to AddressOne transaction
       await simTokenization.transfer(addressOne.address, distributionOne);
+      // Getting Current Balance of AccountOne
       const addrOneBalance = await simTokenization.balanceOf(
         addressOne.address
       );
+      /*  As AddressOne had 0 balance before the transaction,
+       *  the current balance of AddressOne is distributionOne = 10
+       */
       expect(addrOneBalance).to.equal(distributionOne);
       // AddressOne account to AddressTwo transaction
       await simTokenization
-        .connect(addressOne)
+        .connect(addressOne) // Updating the msg.sender value as AddressOne address.
         .transfer(addressTwo.address, distributionTwo);
       const addrTwoBalance = await simTokenization.balanceOf(
         addressTwo.address
       );
+      /*  As AddressTwo had 0 balance before the transaction,
+       *  the current balance of AddressTwo is distributionOne = 5
+       */
       expect(addrTwoBalance).to.equal(distributionTwo);
     });
 
@@ -107,24 +106,13 @@ describe("SIMTokenization Contract", function () {
 
     it("Should fail if the sender is not actual owner", async function () {
       console.log(
-        "Should Fail ==> Contract Current Owner Address: ",
+        "UNIT TEST ==> Contract Current Owner Address: ",
         await simTokenization.owner()
       );
-      console.log("Should Fail: Sending Request with: ", addressTwo.address);
+      console.log("UNIT TEST ==> Sending Request with: ", addressTwo.address);
       await expect(
         simTokenization.connect(addressTwo).changeOwnership(addressOne.address)
       ).to.be.revertedWith("Not Owner");
-    });
-
-    it("Mock R&D", async function () {
-      // Owner account to AddressOne transaction (MOCK)
-      const mockResearch = await MockResearch.mock.transfer.withArgs(addressOne.address, 5).reverts();
-      const addrOneBalance = await simTokenization.balanceOf(
-        owner.address
-      );
-      //const mockResearch = await MockResearch.mock.balanceOf.withArgs(owner.address).reverts();
-      console.log(mockResearch)
-      //expect(await MockResearch.mock.balanceOf.withArgs(owner.address).reverts()).to.equal(100);
     });
   });
 });
