@@ -26,5 +26,8 @@
     "ethers": "^5.7.1",
     "hardhat": "^2.9.9",
     "mocha": "^10.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
   }
 }
