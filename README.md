@@ -73,9 +73,11 @@ To test the network with `Ropsten` and `Alchemy` API
 For coding style and conventions we will follow the [official Solidity style guide][solidity-style-guide].
 
 # Cite:
+
 * https://docs.soliditylang.org/en/v0.8.17/introduction-to-smart-contracts.html#the-ethereum-virtual-machine
 * https://hardhat.org/hardhat-runner/docs/getting-started#overview
 * https://docs.openzeppelin.com/contracts/3.x/erc1155
+* https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts
 * https://ethereum-waffle.readthedocs.io/en/latest/matchers.html
 * https://github.com/Tahmeed156/property-dapp/blob/master/src/contracts/Registry.sol
 * https://nomic.foundation/
