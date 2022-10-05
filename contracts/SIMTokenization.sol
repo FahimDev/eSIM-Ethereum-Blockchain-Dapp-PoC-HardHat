@@ -3,8 +3,9 @@ pragma solidity >=0.5.0 <0.9.0;
 
 // For debugging
 import "hardhat/console.sol";
+import "./utils/AbstractOperationalActors.sol";
 
-contract SIMTokenization {
+contract SIMTokenization is AbstractOperationalActors {
     string public name = "Bangladesh Telecommunications Company Limited-Token";
     string public symbol = "BTCL-T";
     uint256 public totalSupply = 100;
@@ -21,6 +22,9 @@ contract SIMTokenization {
         balances[msg.sender] = totalSupply;
         // And the owner will be the contract creator himself.
         owner = msg.sender;
+        // Inheritance Testing with a Abstract Class
+        console.log("==> DEBUG: Print Sender address From New Utils: %s <==", _msgSender());
+        console.log("==> DEBUG: Print Executor address From New Utils: %s <==", _executor());
     }
 
     /**
