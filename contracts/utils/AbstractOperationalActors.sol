@@ -8,5 +8,8 @@ pragma solidity >=0.5.0 <0.9.0;
  * This contract is only required for intermediate, library-like contracts.
  */
 abstract contract AbstractOperationalActors {
-
+    // Returns the address of request sender's (actor) address.
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
 }
