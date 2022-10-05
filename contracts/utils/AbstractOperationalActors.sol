@@ -12,4 +12,9 @@ abstract contract AbstractOperationalActors {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
+
+    // Returns the Address of current contract executing actor. 
+    function _executor() internal view virtual returns (address) {
+        return address(this);
+    }
 }
