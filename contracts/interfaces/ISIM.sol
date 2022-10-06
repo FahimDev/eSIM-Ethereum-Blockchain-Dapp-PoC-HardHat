@@ -35,13 +35,6 @@ interface ISIM {
     function getCardType() external view returns (string memory);
 
     /**
-     * A SIM card needs to register a MNO Communication Profile in its Circuit Card
-     * to communicate through the mobile network with the help of any Local Mobile Network Service. 
-     * MNO: Mobile Network Operator
-     */
-    function _registerMNOProfile(string memory _cardUniqueId, uint _mnoId, address _signer) internal view returns (string memory);
-
-    /**
      * A SIM must enable a registered MNO Communication profile to use the Local Mobile Network
      */
     function enableMNOProfile(uint mnoId) external view returns (bool);
