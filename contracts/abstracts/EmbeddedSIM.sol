@@ -9,4 +9,21 @@ import "../interfaces/ISIM.sol";
  */
 abstract contract EmbeddedSIM is ISIM {
 
+    function _dataPresentation() internal {
+
+    }
+
+    function _secureRouting() internal {
+
+    }
+
+    /**
+     * As eSIM is embedded can be from the manufacturing segment 
+     * we can keep tract of the IMEI number from the beginning level
+     * IMEI: International Mobile Equipment Identifier
+     */
+    function _assignIMEI() internal {
+
+    }
+
 }
