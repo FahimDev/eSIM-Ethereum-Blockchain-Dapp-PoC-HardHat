@@ -7,7 +7,12 @@ pragma solidity >=0.5.0 <0.9.0;
 interface ISIM {
 
     // =========== Events ===========
-    // Event Data will be directly located at Blockchain Storage.
+    /**
+     * A SIM card needs to register a MNO Communication Profile in its Circuit Card
+     * to communicate through the mobile network with the help of any Local Mobile Network Service. 
+     * This registration event will directly store the Registration Data at Blockchain Storage.  
+     * MNO: Mobile Network Operator
+     */
     event RegisterMNO(
         uint indexed id,
         string cardUniqueId,
