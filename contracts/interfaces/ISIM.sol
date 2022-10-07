@@ -17,7 +17,27 @@ interface ISIM {
         MFF2    // eSIM: 6.0X5.0mm
      }
 
+     enum CardUniqueIdType { ICCID, EID }
+
     // =========== Events ===========
+
+    /**
+     * For traditional SIM unique identification ICCID is used.
+     * And for eSIM unique identification EID (eUICC Identification Number) is used.
+     * 
+     * eUICC: Embedded Universal Integrated Circuit Card
+     * ICCID: Integrated Circuit Card ID (89 is for telecommunication industry)
+     * Ref-ICCID: GSM Association || Official Document TS.25 (Page 7 of 10)
+     * Ref-EID: https://www.gsma.com/services/esim-eis/
+     * Ref: https://cellidfinder.com/mcc-mnc
+     */
+    event RegisterCardUniqueId(
+        uint indexed id,
+        string cardUniqueIdType,
+        uint cardUniqueId
+        address signer
+    );
+
     /**
      * A SIM card needs to register a MNO Communication Profile in its Circuit Card
      * to communicate through the mobile network with the help of any Local Mobile Network Service. 
@@ -26,8 +46,8 @@ interface ISIM {
      */
     event RegisterMNO(
         uint indexed id,
-        string cardUniqueId,
-        uint mnoId,
+        uint cardUniqueId,
+        uint[] mnoId,
         address signer
     );
 
@@ -40,7 +60,7 @@ interface ISIM {
      * UICC: Universal Integrated Circuit Card
      * ICCID: Integrated Circuit Card ID
      */
-    function getCardUniqueId() external view returns (string memory);
+    function getCardUniqueIds() external view returns (string memory);
 
     /**
      * In general the card can have specific card type. For cunsumer level use
@@ -48,10 +68,10 @@ interface ISIM {
      * M2M type. (Machine to Machine)
      * Type: Consumer, M2M
      */
-    function getCardType() external view returns (string memory);
+    function getCardType(uint _cardUniqueId) external view returns (string memory);
 
     /**
      * A SIM must enable a registered MNO Communication profile to use the Local Mobile Network
      */
-    function enableMNOProfile(uint mnoId) external view returns (bool);
+    function enableMNOProfile(uint _mnoId) external view returns (bool);
 }
