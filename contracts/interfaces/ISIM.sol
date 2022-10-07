@@ -3,8 +3,19 @@ pragma solidity >=0.5.0 <0.9.0;
 
 /**
  * SIM Subscriber Identity Module
+ * Interfaces: https://docs.soliditylang.org/en/v0.8.16/contracts.html#interfaces
  */
 interface ISIM {
+
+    // =========== ENUM ===========
+    enum SIMType { Consumer, M2M }
+
+    enum SIMSize { 
+        2FF,    // Standard / Mini SIM: 25X15mm 
+        3FF,    // Micro SIM: 15X12mm
+        4FF,    // Nano SIM: 12.3X8.8mm
+        MFF2    // eSIM: 6.0X5.0mm
+     }
 
     // =========== Events ===========
     /**
