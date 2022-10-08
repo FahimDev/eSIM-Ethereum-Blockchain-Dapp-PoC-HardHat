@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0 <0.9.0;
 
+import "../dto/CircuitCardDTO.sol";
 import "../interfaces/ISIM.sol";
 
 /**
@@ -15,23 +16,16 @@ import "../interfaces/ISIM.sol";
  */
 contract USIM is ISIM {
 
-    private uint _mcc;
-    private uint _mnc;
-    private uint _serial,
-    private uint _checkDigit,
-    private uint _countryCode;
-    private uint _operatorCode;
-    private uint _operatorProvidedUniqueNumber;
+    private uint _iccid;
+    private MNOCommunicationProfile _mnoCommunicationProfile;
 
     constructor(
-        uint mcc_,
-        uint mnc_,
-        uint serial_,
-        uint checkDigit_,
-        uint countryCode_,
-        uint operatorCode_,
-        uint operatorProvidedUniqueNumber_
-    ) {}
+        uint iccid_,
+        MNOCommunicationProfile memory mnoCommunicationProfile_
+    ) {
+        _iccid = iccid_;
+        _mnoCommunicationProfile = mnoCommunicationProfile_;
+    }
 
     function getCardUniqueIds()
         external
