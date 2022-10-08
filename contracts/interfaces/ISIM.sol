@@ -11,10 +11,10 @@ interface ISIM {
     enum SIMType { Consumer, M2M }
 
     enum SIMSize { 
-        2FF,    // Standard / Mini SIM: 25X15mm 
-        3FF,    // Micro SIM: 15X12mm
-        4FF,    // Nano SIM: 12.3X8.8mm
-        MFF2    // eSIM: 6.0X5.0mm
+        Mini,    // Standard / Mini SIM: 25X15mm | 2FF
+        Micro,    // Micro SIM: 15X12mm | 3FF
+        Nano,    // Nano SIM: 12.3X8.8mm | 4FF
+        eSIM    // eSIM: 6.0X5.0mm | MFF2
      }
 
      enum CardUniqueIdType { ICCID, EID }
@@ -34,7 +34,7 @@ interface ISIM {
     event RegisterCardUniqueId(
         uint indexed id,
         string cardUniqueIdType,
-        uint cardUniqueId
+        uint cardUniqueId,
         address signer
     );
 

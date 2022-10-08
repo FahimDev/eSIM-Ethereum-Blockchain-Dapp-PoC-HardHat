@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0 <0.9.0;
+pragma experimental ABIEncoderV2;
 
-import "../dto/CircuitCardDTO.sol";
-import "../interfaces/ISIM.sol";
+import "hardhat/console.sol";
+import "./interfaces/ISIM.sol";
+import "./dto/CircuitCardDTO.sol";
+import "./utils/AbstractOperationalActors.sol";
 
 /**
  * The SIM card which support's 2G and 3G both type of network is
@@ -16,8 +19,8 @@ import "../interfaces/ISIM.sol";
  */
 contract USIM is ISIM {
 
-    private uint _iccid;
-    private MNOCommunicationProfile _mnoCommunicationProfile;
+    uint private _iccid;
+    MNOCommunicationProfile private _mnoCommunicationProfile;
 
     constructor(
         uint iccid_,
@@ -39,7 +42,9 @@ contract USIM is ISIM {
         view
         override
         returns (string memory)
-    {}
+    {
+
+    }
 
     function enableMNOProfile(uint _mnoId)
         external
