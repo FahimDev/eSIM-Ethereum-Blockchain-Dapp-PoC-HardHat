@@ -5,17 +5,33 @@ import "./interfaces/ISIM.sol";
 import "./abstracts/EmbeddedSIM.sol";
 
 contract EmbeddedSIMManager is EmbeddedSIM {
+    address private _iSIMAddress;
 
-    function getCardUniqueIds() external view override returns (string memory){
-
+    // Adding Dependency Injection of USIM Contract in this contract (EmbeddedSIMManager).
+    constructor(address iSIMAddress_) {
+        _iSIMAddress = iSIMAddress_;
     }
 
-    function getCardType(uint _cardUniqueId) external view override returns (string memory){
+    function getCardUniqueIds()
+        external
+        view
+        override
+        returns (string memory)
+    {}
 
+    function getCardType(uint _cardUniqueId)
+        external
+        view
+        override
+        returns (SIMType)
+    {
+        return ISIM(_iSIMAddress).getCardType(_cardUniqueId);
     }
 
-    function enableMNOProfile(uint _mnoId) external view override returns (bool){
-
-    }
-
+    function enableMNOProfile(uint _mnoId)
+        external
+        view
+        override
+        returns (bool)
+    {}
 }
