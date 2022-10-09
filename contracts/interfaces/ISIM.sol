@@ -8,7 +8,7 @@ pragma solidity >=0.5.0 <0.9.0;
 interface ISIM {
 
     // =========== ENUM ===========
-    enum SIMType { Consumer, M2M }
+    enum SIMType { CONSUMER, M2M }
 
     enum SIMSize { 
         Mini,    // Standard / Mini SIM: 25X15mm | 2FF
@@ -68,7 +68,7 @@ interface ISIM {
      * M2M type. (Machine to Machine)
      * Type: Consumer, M2M
      */
-    function getCardType(uint _cardUniqueId) external view returns (string memory);
+    function getCardType(uint _cardUniqueId) external view returns (SIMType);
 
     /**
      * A SIM must enable a registered MNO Communication profile to use the Local Mobile Network

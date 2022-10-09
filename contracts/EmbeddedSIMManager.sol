@@ -10,7 +10,7 @@ contract EmbeddedSIMManager is EmbeddedSIM {
 
     }
 
-    function getCardType(uint _cardUniqueId) external view override returns (string memory){
+    function getCardType(uint _cardUniqueId) external view override returns (SIMType){
 
     }
 

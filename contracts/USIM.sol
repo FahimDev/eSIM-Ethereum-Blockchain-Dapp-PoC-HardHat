@@ -41,9 +41,11 @@ contract USIM is ISIM {
         external
         view
         override
-        returns (string memory)
+        returns (SIMType)
     {
-
+        console.log("==> DEBUG: Card Unique ID : %s <==", _cardUniqueId);
+        SIMType cardType = SIMType.CONSUMER;
+        return cardType;
     }
 
     function enableMNOProfile(uint _mnoId)
