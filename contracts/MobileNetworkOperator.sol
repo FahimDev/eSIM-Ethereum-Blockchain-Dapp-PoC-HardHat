@@ -43,9 +43,7 @@ contract MobileNetworkOperator {
         view
         returns (MNOCommunicationProfile[] memory)
     {
-        MNOCommunicationProfile[] memory _targetMNO = mnoCollectionByOperator[
-            mnoId
-        ];
+        MNOCommunicationProfile[] memory _targetMNO = mnoCollectionByOperator[mnoId];
         return _targetMNO;
     }
 
@@ -68,6 +66,7 @@ contract MobileNetworkOperator {
         _mnoTempPayload.mnc = _mnc;
         _mnoTempPayload.status = _status;
         uint indexId = addMNO(_mnoTempPayload);
+        console.log("==> DEBUG: Pushed MNO Index Number", indexId);
         emit CreatedMNO(
             _mnoTempPayload.id,
             _mnoTempPayload.title,
