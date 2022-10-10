@@ -11,3 +11,19 @@ struct MNOCommunicationProfile {
     string msisdn;
     string imsi;
 }
+
+enum MNOOperationalStatus {
+    OPERATIONAL,
+    INACTIVE
+}
+
+struct MNO {
+    uint id;
+    string title;
+    string brandName;
+    string network;
+    uint prefix;
+    uint mcc; // MCC - Mobile Country Code
+    uint mncc; //  MNC - Mobile Network Code
+    MNOOperationalStatus status;
+}
