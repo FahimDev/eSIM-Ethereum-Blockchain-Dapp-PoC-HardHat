@@ -24,6 +24,6 @@ struct MNO {
     string network;
     uint prefix;
     uint mcc; // MCC - Mobile Country Code
-    uint mncc; //  MNC - Mobile Network Code
+    uint mnc; //  MNC - Mobile Network Code
     MNOOperationalStatus status;
 }
