@@ -25,12 +25,12 @@ contract MobileNetworkOperator {
     );
 
     constructor(
-        string memory title_,
-        string memory symbol_,
+        string memory operatorTitle_,
+        string memory contractSymbol_,
         address owner_
     ) {
-        title = title_;
-        symbol = symbol_;
+        title = operatorTitle_;
+        symbol = contractSymbol_;
         _owner = owner_;
     }
 
@@ -38,13 +38,13 @@ contract MobileNetworkOperator {
         return _mnoOrg;
     }
 
-    function getMNOById(uint mnoId)
+    function getProfilesByMNOId(uint mnoId)
         external
         view
         returns (MNOCommunicationProfile[] memory)
     {
-        MNOCommunicationProfile[] memory _targetMNO = mnoCollectionByOperator[mnoId];
-        return _targetMNO;
+        MNOCommunicationProfile[] memory _targetProfiles = mnoCollectionByOperator[mnoId];
+        return _targetProfiles;
     }
 
     function createMNO(
