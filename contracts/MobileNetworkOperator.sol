@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0 <0.9.0;
 pragma experimental ABIEncoderV2;
+// https://ethereum.stackexchange.com/questions/3609/returning-a-struct-and-reading-via-web3/3614#3614
 
 import "hardhat/console.sol";
 import "./dto/CircuitCardDTO.sol";
@@ -9,7 +10,7 @@ import "./dto/CircuitCardDTO.sol";
 contract MobileNetworkOperator {
     string public title;
     string public symbol;
-    address private _owner;
+    address public owner;
     MNO[] private _mnoOrg;
     mapping(uint => MNOCommunicationProfile[]) mnoCollectionByOperator;
 
@@ -24,18 +25,23 @@ contract MobileNetworkOperator {
         address signer
     );
 
-    constructor(
-        string memory operatorTitle_,
-        string memory contractSymbol_,
-        address owner_
-    ) {
+    constructor(string memory operatorTitle_, string memory contractSymbol_) {
         title = operatorTitle_;
         symbol = contractSymbol_;
-        _owner = owner_;
+        owner = msg.sender;
     }
 
     function showAllMNO() external view returns (MNO[] memory) {
         return _mnoOrg;
+    }
+
+    function getMNOByIndexId(uint indexId) external view returns (MNO memory) {
+        MNO memory _targetedMNO = _mnoOrg[indexId];
+        return _targetedMNO;
+    }
+
+    function totalIndexedMNO() external view returns (uint) {
+        return _mnoOrg.length;
     }
 
     function getProfilesByMNOId(uint mnoId)
@@ -43,7 +49,8 @@ contract MobileNetworkOperator {
         view
         returns (MNOCommunicationProfile[] memory)
     {
-        MNOCommunicationProfile[] memory _targetProfiles = mnoCollectionByOperator[mnoId];
+        MNOCommunicationProfile[]
+            memory _targetProfiles = mnoCollectionByOperator[mnoId];
         return _targetProfiles;
     }
 
@@ -77,6 +84,7 @@ contract MobileNetworkOperator {
             _mnoTempPayload.mnc,
             msg.sender
         );
+        console.log("==> DEBUG: Emited Data Title: ", _mnoTempPayload.title);
         return _mnoTempPayload;
     }
 
@@ -85,10 +93,11 @@ contract MobileNetworkOperator {
         MNOCommunicationProfile memory _mnoCommunicationProfile
     ) external returns (MNOCommunicationProfile memory) {
         mnoCollectionByOperator[mnoId].push(_mnoCommunicationProfile);
+        return _mnoCommunicationProfile;
     }
 
     function addMNO(MNO memory _mno) internal returns (uint) {
         _mnoOrg.push(_mno);
-        return _mnoOrg.length;
+        return _mnoOrg.length - 1;
     }
 }
