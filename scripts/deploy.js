@@ -25,6 +25,13 @@ async function main() {
   const ESIMManagerContract = await ethers.getContractFactory(
     "EmbeddedSIMManager"
   );
+
+  const MobileNetworkOperator = await ethers.getContractFactory(
+    "MobileNetworkOperator"
+  );
+  const MNOProfile = await ethers.getContractFactory(
+  "MNOCommunicationProfileManager"
+  );
   // Hardhat doesn’t keep track of your deployed contracts.
   // We displayed the deployed address in our script
   const genesisContract = await GenesisContract.deploy();
@@ -32,13 +39,19 @@ async function main() {
   const esimManagerContract = await ESIMManagerContract.deploy(
     usimContract.address
   );
+  const mno = await MobileNetworkOperator.deploy("Grameenphone Ltd.", "GP");
+  const mnoProfile = await MNOProfile.deploy("Communication Profile Manager", "CPM");
   // Checking Timeout and Smart Contract Timeout Status.
   await genesisContract.deployed();
   await usimContract.deployed();
   await esimManagerContract.deployed();
+  await mno.deployed();
+  await mnoProfile.deployed();
   console.log("Genesis deployed to: ", genesisContract.address);
   console.log("USIM deployed to: ", usimContract.address);
   console.log("ESIM deployed to: ", esimManagerContract.address);
+  console.log("MNO deployed to: ", mno.address);
+  console.log("Communication-Profile-Manager deployed to: ", mnoProfile.address);
 }
 
 main()
