@@ -68,6 +68,18 @@ To test the network with `Ropsten` and `Alchemy` API
     npx hardhat deploy scripts/deploy.js --network ropsten
 
 
+# Dapp with NextJS
+
+For creating a new Next.js app I am using create-next-app, which sets up everything automatically for us. To create a project, run:
+
+    ​npx create-next-app@latest --typescript
+
+After the installation is complete, to start the development server on `http://localhost:3000` run the given command:
+
+    ​npm run dev
+
+
+
 # Guide
 
 For coding style and conventions we will follow the [official Solidity style guide][solidity-style-guide].
@@ -81,6 +93,7 @@ For coding style and conventions we will follow the [official Solidity style gui
 * https://ethereum-waffle.readthedocs.io/en/latest/matchers.html
 * https://github.com/Tahmeed156/property-dapp/blob/master/src/contracts/Registry.sol
 * https://nomic.foundation/
+* https://nextjs.org/docs
 * https://www.youtube.com/watch?v=T9kYuBcOnjI
 * https://ensarseker1.medium.com/is-more-secure-and-stable-communication-possible-by-using-blockchain-technology-for-esim-b99225ec4675
 * https://github.com/NomicFoundation/hardhat/issues/3201
