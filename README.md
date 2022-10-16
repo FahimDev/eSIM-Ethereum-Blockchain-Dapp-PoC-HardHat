@@ -63,6 +63,10 @@ This command will deploy the network at Hardhat local network.​
 
     npx hardhat deploy scripts/deploy.js​
 
+To test the network with `Ganache`
+
+    npx hardhat run ./scripts/deploy.js --network ganache
+
 To test the network with `Ropsten` and `Alchemy` API
 
     npx hardhat deploy scripts/deploy.js --network ropsten
@@ -77,6 +81,16 @@ For creating a new Next.js app I am using create-next-app, which sets up everyth
 After the installation is complete, to start the development server on `http://localhost:3000` run the given command:
 
     ​npm run dev
+
+To ensure the security in three individual tires I am using API in the middle of our Blockchain ecosystem and Front-end. And to ensure security I am introducing `JWT` in our API layer.
+
+    npm i jsonwebtoken
+
+To use `JWT` in type-specific, this package contains type definitions for JSON web token
+
+    npm install --save @types/jsonwebtoken --save-dev
+
+
 
 
 
@@ -102,6 +116,8 @@ For coding style and conventions we will follow the [official Solidity style gui
 * https://hackernoon.com/hacking-solidity-contracts-using-txorigin-for-authorization-are-vulnerable-to-phishing
 * https://cryptomarketpool.com/data-types-in-solidity-smart-contracts/
 * https://medium.com/coinmonks/gas-optimization-in-solidity-part-i-variables-9d5775e43dde
+* https://www.npmjs.com/package/jsonwebtoken
+* https://www.npmjs.com/package/@types/jsonwebtoken
 
 [solidity-style-guide]: https://docs.soliditylang.org/en/v0.8.14/style-guide.html
 [hardhat-version-issue]: https://github.com/NomicFoundation/hardhat/issues/3201
