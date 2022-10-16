@@ -90,7 +90,16 @@ To use `JWT` in type-specific, this package contains type definitions for JSON w
 
     npm install --save @types/jsonwebtoken --save-dev
 
+For API development and testing, I am also using the Swagger tools suite. For that, I have installed the following packages.
 
+    npm i --save-dev @types/swagger-jsdoc
+    npm i --save-dev @types/swagger-ui-express
+
+Then I installed the `next-swagger-doc` (TS) package with the following command. And followed the rest of the instructions from this link: https://www.npmjs.com/package/next-swagger-doc
+
+    npm i next-swagger-doc
+
+NOTE: To view the Swagger UI: http://localhost:3000/api-doc
 
 
 
@@ -118,6 +127,7 @@ For coding style and conventions we will follow the [official Solidity style gui
 * https://medium.com/coinmonks/gas-optimization-in-solidity-part-i-variables-9d5775e43dde
 * https://www.npmjs.com/package/jsonwebtoken
 * https://www.npmjs.com/package/@types/jsonwebtoken
+* https://www.npmjs.com/package/next-swagger-doc
 
 [solidity-style-guide]: https://docs.soliditylang.org/en/v0.8.14/style-guide.html
 [hardhat-version-issue]: https://github.com/NomicFoundation/hardhat/issues/3201
