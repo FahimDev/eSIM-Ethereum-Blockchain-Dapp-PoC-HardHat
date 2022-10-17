@@ -1,9 +1,27 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { useWeb3React } from "@web3-react/core";
+import { InjectedConnector } from "@web3-react/injected-connector";
+import { useState, useEffect } from "react";
+import { ethers } from "ethers";
+
+export const injected = new InjectedConnector({});
 
 const Home: NextPage = () => {
+  // To check are we actively connected with the web3 React provider or not.
+  const { activate, active, library: provider } = useWeb3React();
+  // https://github.com/PatrickAlphaC/nextjs-web3-react-metamask-connect/blob/main/pages/index.js
+  const connectMetaMask = async () => {
+    try {
+      if (!active) {
+        await activate(injected);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -13,17 +31,15 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to eSIM Dapp
-        </h1>
+        <h1 className={styles.title}>Welcome to eSIM Dapp</h1>
 
         <p className={styles.description}>
-          Global eSIM DAO and IoT ownership manaement in{' '}
+          Global eSIM DAO and IoT ownership manaement in{" "}
           <code className={styles.code}>Blockchain</code>
         </p>
 
         <div className={styles.grid}>
-          <button className={styles.card}>
+          <button onClick={connectMetaMask} className={styles.card}>
             <h2>Connect Wallet &rarr;</h2>
             <p>Get Connected with your MetaMask Wallet.</p>
           </button>
@@ -33,22 +49,17 @@ const Home: NextPage = () => {
             <p>Add new Organizations for operating in the DAO system</p>
           </a>
 
-          <a
-            href="#"
-            className={styles.card}
-          >
+          <a href="#" className={styles.card}>
             <h2>MNO Profile &rarr;</h2>
-            <p>Discover and deploy new Mobile-Network-Operator and MNO Communication Profiles.</p>
+            <p>
+              Discover and deploy new Mobile-Network-Operator and MNO
+              Communication Profiles.
+            </p>
           </a>
 
-          <a
-            href="https://www.gsma.com/"
-            className={styles.card}
-          >
+          <a href="https://www.gsma.com/" className={styles.card}>
             <h2>GSMA &rarr;</h2>
-            <p>
-              Representing the worldwide mobile communications industry.
-            </p>
+            <p>Representing the worldwide mobile communications industry.</p>
           </a>
         </div>
       </main>
@@ -59,14 +70,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/bs23.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

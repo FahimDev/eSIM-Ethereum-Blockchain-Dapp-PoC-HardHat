@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
+    "@web3-react/types": "^6.0.7",
+    "ethers": "^5.7.1",
     "jsonwebtoken": "^8.5.1",
     "next": "12.3.1",
     "next-swagger-doc": "^0.3.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "swagger-ui-react": "^4.14.3"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "swagger-ui-react": "^4.14.3",
+    "web3": "^1.8.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.9",
