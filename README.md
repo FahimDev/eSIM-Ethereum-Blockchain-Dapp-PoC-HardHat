@@ -63,9 +63,44 @@ This command will deploy the network at Hardhat local network.​
 
     npx hardhat deploy scripts/deploy.js​
 
+To test the network with `Ganache`
+
+    npx hardhat run ./scripts/deploy.js --network ganache
+
 To test the network with `Ropsten` and `Alchemy` API
 
     npx hardhat deploy scripts/deploy.js --network ropsten
+
+
+# Dapp with NextJS
+
+For creating a new Next.js app I am using create-next-app, which sets up everything automatically for us. To create a project, run:
+
+    ​npx create-next-app@latest --typescript
+
+After the installation is complete, to start the development server on `http://localhost:3000` run the given command:
+
+    ​npm run dev
+
+To ensure the security in three individual tires I am using API in the middle of our Blockchain ecosystem and Front-end. And to ensure security I am introducing `JWT` in our API layer.
+
+    npm i jsonwebtoken
+
+To use `JWT` in type-specific, this package contains type definitions for JSON web token
+
+    npm install --save @types/jsonwebtoken --save-dev
+
+For API development and testing, I am also using the Swagger tools suite. For that, I have installed the following packages.
+
+    npm i --save-dev @types/swagger-jsdoc
+    npm i --save-dev @types/swagger-ui-express
+
+Then I installed the `next-swagger-doc` (TS) package with the following command. And followed the rest of the instructions from this link: https://www.npmjs.com/package/next-swagger-doc
+
+    npm i next-swagger-doc
+
+NOTE: To view the Swagger UI: http://localhost:3000/api-doc
+
 
 
 # Guide
@@ -81,6 +116,7 @@ For coding style and conventions we will follow the [official Solidity style gui
 * https://ethereum-waffle.readthedocs.io/en/latest/matchers.html
 * https://github.com/Tahmeed156/property-dapp/blob/master/src/contracts/Registry.sol
 * https://nomic.foundation/
+* https://nextjs.org/docs
 * https://www.youtube.com/watch?v=T9kYuBcOnjI
 * https://ensarseker1.medium.com/is-more-secure-and-stable-communication-possible-by-using-blockchain-technology-for-esim-b99225ec4675
 * https://github.com/NomicFoundation/hardhat/issues/3201
@@ -89,6 +125,9 @@ For coding style and conventions we will follow the [official Solidity style gui
 * https://hackernoon.com/hacking-solidity-contracts-using-txorigin-for-authorization-are-vulnerable-to-phishing
 * https://cryptomarketpool.com/data-types-in-solidity-smart-contracts/
 * https://medium.com/coinmonks/gas-optimization-in-solidity-part-i-variables-9d5775e43dde
+* https://www.npmjs.com/package/jsonwebtoken
+* https://www.npmjs.com/package/@types/jsonwebtoken
+* https://www.npmjs.com/package/next-swagger-doc
 
 [solidity-style-guide]: https://docs.soliditylang.org/en/v0.8.14/style-guide.html
 [hardhat-version-issue]: https://github.com/NomicFoundation/hardhat/issues/3201
