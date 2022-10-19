@@ -6,6 +6,7 @@ import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+const SIMTokenizationJSON = require("../../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 
 export const injected = new InjectedConnector({});
 
@@ -13,6 +14,8 @@ const Home: NextPage = () => {
   // To check are we actively connected with the web3 React provider or not.
   const { activate, active, library: provider } = useWeb3React();
   // https://github.com/PatrickAlphaC/nextjs-web3-react-metamask-connect/blob/main/pages/index.js
+  // https://github.com/Uniswap/web3-react/blob/v6/docs/connectors/injected.md
+  // https://www.w3schools.com/charsets/ref_utf_punctuation.asp
   const connectMetaMask = async () => {
     try {
       if (!active) {
@@ -22,6 +25,17 @@ const Home: NextPage = () => {
       console.log(e);
     }
   };
+  const execute = async () => {
+    let abiData = JSON.stringify(SIMTokenizationJSON.abi);
+    const signer = provider.getSigner();
+    const contractAddress = "0x82Cc04bB815521153ada397cf746C6c14EDcF18f";
+    const contract = new ethers.Contract(contractAddress, abiData, signer);
+    try {
+      window.alert(await contract.totalSupply());
+    } catch (error){
+      console.log(error);
+    }
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -39,10 +53,17 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.grid}>
+          {active ? (
+          <button onClick={execute} className={styles.card}>
+            <h2>Wallet Connected &#8383;</h2>
+            <p>Your client application has been connected with your MetaMask Wallet</p>
+          </button>
+          ) : (
           <button onClick={connectMetaMask} className={styles.card}>
             <h2>Connect Wallet &rarr;</h2>
             <p>Get Connected with your MetaMask Wallet.</p>
           </button>
+          )}
 
           <a href="#" className={styles.card}>
             <h2>Add Organization &rarr;</h2>
