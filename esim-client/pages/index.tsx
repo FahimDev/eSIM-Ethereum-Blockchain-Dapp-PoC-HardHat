@@ -6,6 +6,7 @@ import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+const ContractAddress = require("../../deployedContractAddress.json");
 const SIMTokenizationJSON = require("../../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 
 export const injected = new InjectedConnector({});
@@ -28,10 +29,11 @@ const Home: NextPage = () => {
   const execute = async () => {
     let abiData = JSON.stringify(SIMTokenizationJSON.abi);
     const signer = provider.getSigner();
-    const contractAddress = "0x82Cc04bB815521153ada397cf746C6c14EDcF18f";
+    const contractAddress = ContractAddress.genesisContract;
     const contract = new ethers.Contract(contractAddress, abiData, signer);
     try {
-      window.alert(await contract.totalSupply());
+      window.alert(`Contract Address: ${contractAddress}`);
+      window.alert(`Total Contract's Token Supply: ${await contract.totalSupply()}`);
     } catch (error){
       console.log(error);
     }
