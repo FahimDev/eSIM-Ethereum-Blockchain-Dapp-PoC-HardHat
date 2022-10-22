@@ -4,7 +4,13 @@ import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDashboard } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAssistiveListeningSystems,
+  faDashboard,
+  faSimCard,
+  faTowerCell,
+  faWallet,
+} from "@fortawesome/free-solid-svg-icons";
 
 const NavBar: NextPage = () => {
   const sideBarEl: any = useRef();
@@ -72,7 +78,7 @@ const NavBar: NextPage = () => {
             <span className="tooltip">Search</span>
           </li>
           <li>
-            <a href="#">
+            <a href="/">
               <i className="bx">
                 <FontAwesomeIcon icon={faDashboard} />
               </i>
@@ -82,39 +88,78 @@ const NavBar: NextPage = () => {
           </li>
           <li>
             <a href="#">
-              <i className="bx bx-user"></i>
+              <i className="bx">
+                <FontAwesomeIcon icon={faWallet} />
+              </i>
+              <span className="links_name">Wallet</span>
+            </a>
+            <span className="tooltip">Wallet</span>
+          </li>
+          <li>
+            <a href="/create-mno">
+              <i className="bx">
+                <FontAwesomeIcon icon={faTowerCell} />
+              </i>
+              <span className="links_name">MNO</span>
+            </a>
+            <span className="tooltip">Mobile Network Operator</span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx">
+                <FontAwesomeIcon icon={faSimCard} />
+              </i>
+              <span className="links_name">eSIM</span>
+            </a>
+            <span className="tooltip">Embedded-SIM</span>
+          </li>
+          <li>
+            <a href="https://www.gsma.com/">
+              <i className="bx"> &#128385; </i>
+              <span className="links_name">GSMA</span>
+            </a>
+            <span className="tooltip">
+              Global System for Mobile Communications Association
+            </span>
+          </li>
+          <li>
+            <a href="#">
+              <i className="bx">
+                <img
+                  className="bx icon p-3 invert hover:invert-0"
+                  width="50"
+                  src="/nft-boxFree.svg"
+                  alt="profileImg"
+                />
+              </i>
+              <span className="links_name">NFT</span>
+            </a>
+            <span className="tooltip">Non-fungible Token</span>
+          </li>
+          <li></li>
+
+          <li>
+            <a href="#">
+              <i className="bx"> &#128390; </i>
               <span className="links_name">User</span>
             </a>
-            <span className="tooltip">User</span>
+            <span className="tooltip">Signer</span>
           </li>
           <li>
-            <a href="#">
-              <i className="bx bx-chat"></i>
-              <span className="links_name">Messages</span>
+            <a href="/api-doc">
+              <i className="bx">
+                <img
+                  className="bx icon p-3 hover:invert"
+                  width="50"
+                  src="/swagger.svg"
+                  alt="profileImg"
+                />
+              </i>
+              <span className="links_name">Swagger API Suit</span>
             </a>
-            <span className="tooltip">Messages</span>
+            <span className="tooltip">Swagger API Suit</span>
           </li>
-          <li>
-            <a href="#">
-              <i className="bx bx-pie-chart-alt-2"></i>
-              <span className="links_name">Analytics</span>
-            </a>
-            <span className="tooltip">Analytics</span>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bx bx-folder"></i>
-              <span className="links_name">File Manager</span>
-            </a>
-            <span className="tooltip">Files</span>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bx bx-cog"></i>
-              <span className="links_name">Setting</span>
-            </a>
-            <span className="tooltip">Setting</span>
-          </li>
+
           <li className="profile">
             <div className="profile-details">
               <img src="./BlockchainDev.jfif" alt="profileImg" />
