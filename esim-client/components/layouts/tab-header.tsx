@@ -2,11 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 
-const TabHeaderComponent: NextPage = () => {
+const TabHeaderComponent: NextPage = ({ title }:any) => {
   return (
     <div>
       <Head>
-        <title>eSIM Blockchain</title>
+        <title>{title ? title : 'eSIM Blockchain'}</title>
         <meta
           name="description"
           content="Mobile Network Operator eSIM Management System"

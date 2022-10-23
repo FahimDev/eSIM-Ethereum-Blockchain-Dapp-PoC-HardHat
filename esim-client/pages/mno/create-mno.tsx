@@ -6,9 +6,10 @@ import CreateMNOComponent from "../../components/mno/create-mno"; // https://git
 import TabHeaderComponent from "../../components/layouts/tab-header"; 
 
 const CreateMNO: NextPage = () => {
+
   return (
     <div className={styles.container}>
-      <TabHeaderComponent />
+      <TabHeaderComponent title="MNO Registration" />
       <CreateMNOComponent />
     </div>
   );
