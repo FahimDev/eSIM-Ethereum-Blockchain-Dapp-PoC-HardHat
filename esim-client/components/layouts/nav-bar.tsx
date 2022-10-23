@@ -96,7 +96,7 @@ const NavBar: NextPage = () => {
             <span className="tooltip">Wallet</span>
           </li>
           <li>
-            <a href="/create-mno">
+            <a href="/mno/create-mno">
               <i className="bx">
                 <FontAwesomeIcon icon={faTowerCell} />
               </i>

@@ -11,7 +11,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 library.add(fas);
 // Component
-import NavBar from "../components/nav-bar"; // https://github.com/gopinav/Next-JS-Tutorials/tree/master/next-misc
+import NavBar from "../components/layouts/nav-bar"; // https://github.com/gopinav/Next-JS-Tutorials/tree/master/next-misc
 
 const getLibrary = (provider: any) => {
   return new Web3Provider(provider);

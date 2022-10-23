@@ -1,19 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/RegisterMNO.module.css";
+import styles from "../../styles/RegisterMNO.module.css";
 
-const CreateMNO: NextPage = () => {
+const CreateMNOComponent: NextPage = () => {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Register MNO</title>
-        <meta
-          name="description"
-          content="Mobile Network Operator Registration Page"
-        />
-        <link rel="icon" href="/Brainstation23.ico" />
-      </Head>
       <main className={styles.main}>
         <div className="flex flex-row flex-wrap justify-center">
           <div className="basis-3/6">
@@ -73,4 +65,4 @@ const CreateMNO: NextPage = () => {
     </div>
   );
 };
-export default CreateMNO;
+export default CreateMNOComponent;
