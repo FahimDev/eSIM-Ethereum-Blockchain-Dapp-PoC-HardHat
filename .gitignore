@@ -3,7 +3,10 @@ node_modules
 coverage
 coverage.json
 typechain
+deployedContractAddress.json
 
 #Hardhat files
 cache
 artifacts
+esim-client/yarn.lock
+package-lock.json
