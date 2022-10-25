@@ -74,7 +74,7 @@ const NavBar: NextPage = () => {
           <img
             className="bx icon p-3 hover:invert"
             width="50"
-            src="/Brainstation23.ico"
+            src="/nav_icons/Brainstation23.ico"
             alt="profileImg"
           />
           <div className="logo_name pr-4">Brain Station 23</div>
@@ -223,7 +223,7 @@ const NavBar: NextPage = () => {
                 <img
                   className="bx icon p-3 invert hover:invert-0"
                   width="50"
-                  src="/nft-boxFree.svg"
+                  src="/nav_icons/nft-boxFree.svg"
                   alt="profileImg"
                 />
               </i>
@@ -246,7 +246,7 @@ const NavBar: NextPage = () => {
                 <img
                   className="bx icon p-3 hover:invert"
                   width="50"
-                  src="/swagger.svg"
+                  src="/nav_icons/swagger.svg"
                   alt="profileImg"
                 />
               </i>
@@ -257,7 +257,7 @@ const NavBar: NextPage = () => {
 
           <li className="profile">
             <div className="profile-details">
-              <img src="./BlockchainDev.jfif" alt="profileImg" />
+              <img src="./avatar/BlockchainDev.jfif" alt="profileImg" />
               <div className="name_job">
                 <div className="name">Md. Ariful Islam</div>
                 <div className="job">Software Engineer</div>

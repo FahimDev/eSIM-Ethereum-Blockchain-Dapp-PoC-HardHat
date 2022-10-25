@@ -11,7 +11,7 @@ const TabHeaderComponent: NextPage = ({ title }:any) => {
           name="description"
           content="Mobile Network Operator eSIM Management System"
         />
-        <link rel="icon" href="/Brainstation23.ico" />
+        <link rel="icon" href="Brainstation23.ico" />
       </Head>
     </div>
   );
