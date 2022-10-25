@@ -36,6 +36,10 @@ const TechCardsComponent: NextPage = () => {
               <img src="/card_images/postgresSQL.png" />
               <figcaption>PostgresSQL</figcaption>
             </figure>
+            <figure className={cardStyles.card}>
+              <img src="/card_images/github.png" />
+              <figcaption>GitHub</figcaption>
+            </figure>
           </div>
 
           <h2 className="font-mono text-slate-100">
