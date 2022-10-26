@@ -109,6 +109,11 @@ For coding style and conventions we will follow the [official Solidity style gui
 
 # Cite:
 
+* https://github.com/fravoll/solidity-patterns
+* https://dev.to/mudgen/
+* https://github.com/aavegotchi/aavegotchi-contracts/tree/master/contracts/Aavegotchi
+* https://etherscan.io/blocks
+* https://app.compound.finance/#vote
 * https://docs.soliditylang.org/en/v0.8.17/introduction-to-smart-contracts.html#the-ethereum-virtual-machine
 * https://hardhat.org/hardhat-runner/docs/getting-started#overview
 * https://docs.openzeppelin.com/contracts/3.x/erc1155

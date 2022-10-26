@@ -5,7 +5,6 @@
  * command: npx hardhat run ./scripts/deploy.js --network ganache
  * But we can use multiple network attributes to deploy in different networks also.
  */
-
 const { ethers } = require("hardhat");
 
 async function main() {
@@ -41,6 +40,8 @@ async function main() {
   );
   const mno = await MobileNetworkOperator.deploy("Grameenphone Ltd.", "GP");
   const mnoProfile = await MNOProfile.deploy("Communication Profile Manager", "CPM");
+  contractAddressSaver("genesisContract",genesisContract.address);
+
   // Checking Timeout and Smart Contract Timeout Status.
   await genesisContract.deployed();
   await usimContract.deployed();
@@ -60,3 +61,18 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+function contractAddressSaver(key_name, value){
+  const fs = require('fs');
+  // json data
+  var jsonData = `{ "${key_name}" : "${value}" }`;
+  // stringify JSON Object
+  //var jsonContent = JSON.stringify(jsonData);
+  fs.writeFile("deployedContractAddress.json", jsonData, 'utf8', function (err) {
+    if (err) {
+        console.log("An error occured while writing JSON Object to File.");
+        return console.log(err);
+    }
+    console.log("JSON file has been saved.");
+  });
+}
