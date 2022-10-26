@@ -3,14 +3,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
 import { ethers } from "ethers";
 import styles from "../../styles/RegisterMNO.module.css";
+import { useRef, useState } from "react";
+
+
 
 const CreateMNOComponent: NextPage = () => {
+  const [signatures, setSignatures] = useState([]);
+
+  const handleSign = async (e: any) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    let mnoObj: any = {
+      title: data.get("title"),
+      brand: data.get("brand"),
+      network: data.get("network"),
+      prefix: data.get("prefix"),
+      mcc: data.get("mcc"),
+      mnc: data.get("mnc"),
+      state: data.get("state"),
+      username: data.get("username"),
+      email: data.get("email"),
+      password: data.get("password"),
+    }
+    console.log(mnoObj);
+  };
   return (
     <div className={styles.container}>
       <main className={styles.main}>
         <div className="flex flex-row flex-wrap justify-center">
           <div className="basis-3/6">
-            <form className="shadow-xl border-double border-4 border-cyan-600 rounded-lg border-x-cyan-100">
+            <form onSubmit={handleSign} className="shadow-xl border-double border-4 border-cyan-600 rounded-lg border-x-cyan-100">
               <div className="p-8">
                 <h1 className="capitalize hover:uppercase text-2xl">
                   Register
