@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRef } from "react";
+import { ethers } from "ethers";
+import { useEffect, useRef, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +26,7 @@ const NavBar: NextPage = () => {
 
   // To check are we actively connected with the web3 React provider or not.
   const { activate, active, library: provider } = useWeb3React();
+
   const connectMetaMask = async () => {
     try {
       if (!active) {
@@ -34,6 +36,18 @@ const NavBar: NextPage = () => {
       console.log(e);
     }
   };
+
+  const popUpMetaMask = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      window.alert(`Current Wallet Address: ${account}`);
+    } else {
+      window.alert("Something went wrong! Please re-configure/ install your Crypto Wallet");
+    }
+
+
+  }
 
   function sidebarClickHandler() {
     sideBarEl.current.classList.toggle("open");
@@ -105,8 +119,8 @@ const NavBar: NextPage = () => {
             <span className="tooltip">Dashboard</span>
           </li>
           {active ? (
-            <li>
-              <a href="/wallet-operations">
+            <li onClick={popUpMetaMask}>
+              <a href="#">
                 <i>
                   <svg
                     className="bx"
