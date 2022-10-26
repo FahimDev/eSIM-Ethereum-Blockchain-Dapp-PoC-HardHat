@@ -1,8 +1,7 @@
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import { ethers } from "ethers";
 import styles from "../../styles/RegisterMNO.module.css";
 
 const CreateMNOComponent: NextPage = () => {
@@ -134,6 +133,7 @@ const CreateMNOComponent: NextPage = () => {
                     <select
                       className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
+                      name="state"
                     >
                       <option>Active</option>
                       <option>Inactive</option>
@@ -158,6 +158,7 @@ const CreateMNOComponent: NextPage = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id="username"
+                      name="username"
                       type="text"
                       placeholder="<Brand><MNC><OfficeID>"
                     />
@@ -172,6 +173,7 @@ const CreateMNOComponent: NextPage = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="example@official.com"
                     />
@@ -185,6 +187,7 @@ const CreateMNOComponent: NextPage = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="password"
+                      name="password"
                       type="password"
                       placeholder="******************"
                     />
@@ -207,7 +210,7 @@ const CreateMNOComponent: NextPage = () => {
                 <div className="flex items-center justify-center p-4">
                   <span className="relative inline-flex">
                     <button
-                      type="button"
+                      type="submit"
                       className={`${styles.registerbtn} inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-sky-500 bg-white dark:bg-slate-800 transition ease-in-out duration-150 cursor-not-allowed ring-1 ring-slate-900/10 dark:ring-slate-200/20`}
                     >
                       Get Register
