@@ -4,16 +4,44 @@ import type { NextPage } from "next";
 import { ethers } from "ethers";
 import styles from "../../styles/RegisterMNO.module.css";
 import { useRef, useState } from "react";
-
-
+import { useWeb3React } from "@web3-react/core";
 
 const CreateMNOComponent: NextPage = () => {
-  const [signatures, setSignatures] = useState([]);
+  /**
+   * In useState first element can be an object and 
+   * the second elementr is a value setter function of that object
+   *  */ 
+  const [signatures, setSignaturesFun] = useState<any>([]);
+  const { active, library: provider } = useWeb3React();
+
+  const signMessage = async ( dto: any ) => {
+    try {
+      if (!window.ethereum){
+        throw new Error("No crypto wallet found. Please install it.");
+      }
+      if(!active){
+        window.alert("Your wallet is not connected!");
+        return null;
+      }
+      const signer = provider.getSigner();
+      const unsignedJSON = JSON.stringify(dto);
+      const signature = await signer.signMessage(unsignedJSON);
+      const address = await signer.getAddress();
+  
+      return {
+        dto,
+        signature,
+        address
+      };
+    } catch (err) {
+      window.alert(err);
+    }
+  };
 
   const handleSign = async (e: any) => {
     e.preventDefault();
     const data = new FormData(e.target);
-    let mnoObj: any = {
+    let mnoDTO: any = {
       title: data.get("title"),
       brand: data.get("brand"),
       network: data.get("network"),
@@ -23,9 +51,19 @@ const CreateMNOComponent: NextPage = () => {
       state: data.get("state"),
       username: data.get("username"),
       email: data.get("email"),
-      password: data.get("password"),
+      password: data.get("password")
     }
-    console.log(mnoObj);
+    const sig = await signMessage(mnoDTO);
+    if (sig) {
+      /**
+       * The use of '...' in the array is to prevent the data override issue in any index
+       * It keeps the continuity of the index and assign data and a new empty index.  
+       *   */ 
+      setSignaturesFun([...signatures, sig]);
+      window.alert(`*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`);
+    }else{
+      window.alert("Please, check your wallet and try again.");
+    }
   };
   return (
     <div className={styles.container}>
