@@ -76,10 +76,12 @@ export default async function createMNO(
   try {
     const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto), signature);
     if (signerAddr !== address) {
-      res.statusCode = 402;
+      res.statusCode = 401;
       res.end("Invalid");
       return;
     }
+    // Hiding the Secret Before Sending the Response
+    dto.password = "**********";
     res.status(200).json({
       id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       address: address,
