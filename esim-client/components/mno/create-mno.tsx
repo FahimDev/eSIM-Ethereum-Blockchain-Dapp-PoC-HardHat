@@ -8,30 +8,105 @@ import { useWeb3React } from "@web3-react/core";
 
 const CreateMNOComponent: NextPage = () => {
   /**
-   * In useState first element can be an object and 
+   * In useState first element can be an object and
    * the second elementr is a value setter function of that object
-   *  */ 
+   *  */
   const [signatures, setSignaturesFun] = useState<any>([]);
   const { active, library: provider } = useWeb3React();
+  const delay = (ms: number | undefined) =>
+    new Promise((res) => setTimeout(res, ms));
 
-  const signMessage = async ( dto: any ) => {
+  const checkWallet = async () => {
+    if (!window.ethereum) {
+      throw new Error("No crypto wallet found. Please install it.");
+      return null;
+    }
+    if (!active) {
+      window.alert("Your wallet is not connected!");
+      return null;
+    }
+    return "Connected";
+  };
+
+  const signMessageV4 = async (dto: any) => {
+    if ((await checkWallet()) == null) {
+      return null;
+    }
     try {
-      if (!window.ethereum){
-        throw new Error("No crypto wallet found. Please install it.");
+      let data = dto.messageDTO;
+      const msgPayload = {
+        domain: {
+          chainId: 1337,
+          name: "Mobile Network Operator Registration",
+        },
+        message: data,
+        primaryType: "WeightedVector",
+        types: {
+          EIP712Domain: [
+            { name: "name", type: "string" },
+            { name: "chainId", type: "uint256" },
+          ],
+          WeightedVector: dto.types,
+        },
+      };
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      // Set up variables for message signing
+      let msgParams = JSON.stringify(msgPayload);
+      var params = [address, msgParams];
+      var method = "eth_signTypedData_v4";
+      const signature: string = await signGeneratorV4(method, params, address);
+      return {
+        data,
+        signature,
+        address,
+      };
+    } catch (err) {
+      window.alert(err);
+      return null;
+    }
+  };
+
+  const signGeneratorV4 = async (
+    method: string,
+    params: any[],
+    address: string
+  ) => {
+    // Send signature request
+    let signedMessage: string = "";
+    await window.ethereum.sendAsync(
+      {
+        method,
+        params,
+        address,
+      },
+      async function (err: Error, result: any) {
+        if (err) {
+          window.alert(err.message);
+          return console.log(err);
+        }
+        // Store retrieved signature result
+        signedMessage = result.result;
       }
-      if(!active){
-        window.alert("Your wallet is not connected!");
+    );
+    await delay(7000);
+    return signedMessage;
+  };
+
+  const signMessage = async (dto: any) => {
+    try {
+      if ((await checkWallet()) == null) {
         return null;
       }
       const signer = provider.getSigner();
       const unsignedJSON = JSON.stringify(dto);
       const signature = await signer.signMessage(unsignedJSON);
       const address = await signer.getAddress();
-  
+
       return {
         dto,
         signature,
-        address
+        address,
       };
     } catch (err) {
       window.alert(err);
@@ -51,17 +126,35 @@ const CreateMNOComponent: NextPage = () => {
       state: data.get("state"),
       username: data.get("username"),
       email: data.get("email"),
-      password: data.get("password")
-    }
-    const sig = await signMessage(mnoDTO);
-    if (sig) {
+      password: data.get("password"),
+    };
+
+    let mnoDTO_v4: any = {
+      messageDTO: mnoDTO,
+      types: [
+        { name: "title", type: "string" },
+        { name: "brand", type: "string" },
+        { name: "network", type: "string" },
+        { name: "prefix", type: "string" },
+        { name: "mcc", type: "string" },
+        { name: "mnc", type: "string" },
+        { name: "username", type: "string" },
+        { name: "email", type: "string" },
+        { name: "password", type: "string" },
+      ],
+    };
+    const sig = await signMessageV4(mnoDTO_v4);
+    // const sig = await signMessage(mnoDTO);
+    if (sig && sig?.signature.length > 0) {
       /**
        * The use of '...' in the array is to prevent the data override issue in any index
-       * It keeps the continuity of the index and assign data and a new empty index.  
-       *   */ 
+       * It keeps the continuity of the index and assign data and a new empty index.
+       *   */
       setSignaturesFun([...signatures, sig]);
-      window.alert(`*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`);
-    }else{
+      window.alert(
+        `*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`
+      );
+    } else {
       window.alert("Please, check your wallet and try again.");
     }
   };
@@ -70,7 +163,10 @@ const CreateMNOComponent: NextPage = () => {
       <main className={styles.main}>
         <div className="flex flex-row flex-wrap justify-center">
           <div className="basis-3/6">
-            <form onSubmit={handleSign} className="shadow-xl border-double border-4 border-cyan-600 rounded-lg border-x-cyan-100">
+            <form
+              onSubmit={handleSign}
+              className="shadow-xl border-double border-4 border-cyan-600 rounded-lg border-x-cyan-100"
+            >
               <div className="p-8">
                 <h1 className="capitalize hover:uppercase text-2xl">
                   Register
