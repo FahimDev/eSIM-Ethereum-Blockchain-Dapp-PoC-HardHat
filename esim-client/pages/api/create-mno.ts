@@ -1,4 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import {
+  SignTypedDataVersion,
+  recoverTypedSignature,
+} from "@metamask/eth-sig-util";
 import { ethers } from "ethers";
 
 /**
@@ -74,12 +78,32 @@ export default async function createMNO(
   }
   const { dto, signature, address } = req.body;
   try {
-    const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto), signature);
-    if (signerAddr !== address) {
+    /***********************************|
+   |        Sign Typed Data v4          |
+   |__________________________________*/
+
+    // Verify signature with recoverTypedSignature()
+    let restored = recoverTypedSignature({
+      signature,
+      version: SignTypedDataVersion.V4,
+      data: dto as any,
+    });
+    // Check to confirm that the signature address is the same as the original user wallet address
+    if (restored.toUpperCase() !== address.toUpperCase()) {
+      // https://bitflyer.com/en-jp/faq/5-10
       res.statusCode = 401;
       res.end("Invalid");
       return;
     }
+
+    // const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto), signature);
+
+    // if (signerAddr !== address) {
+    //   res.statusCode = 401;
+    //   res.end("Invalid");
+    //   return;
+    // }
+
     // Hiding the Secret Before Sending the Response
     dto.password = "**********";
     res.status(200).json({
