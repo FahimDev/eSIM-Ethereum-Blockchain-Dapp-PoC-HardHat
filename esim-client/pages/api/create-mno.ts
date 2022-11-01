@@ -51,6 +51,8 @@ import { ethers } from "ethers";
  *          type: string
  *        signature:
  *          type: string
+ *        splitSignature:
+ *          type: string
  *        address:
  *          type: string
  *        recordCreatedAt:
@@ -62,6 +64,7 @@ type Data = {
   id: string;
   address: string;
   signedData: string;
+  splitSignature: string;
   message: string;
   recordCreatedAt: string;
 };
@@ -96,6 +99,12 @@ export default async function createMNO(
       return;
     }
 
+    // split signature
+    const r = signature.slice(0, 66);
+    const s = "0x" + signature.slice(66, 130);
+    const v = parseInt(signature.slice(130, 132), 16);
+    console.log({ r, s, v });
+
     // const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto), signature);
 
     // if (signerAddr !== address) {
@@ -110,6 +119,7 @@ export default async function createMNO(
       id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       address: address,
       signedData: signature,
+      splitSignature: JSON.stringify({ r, s, v }),
       message: JSON.stringify(dto),
       recordCreatedAt: "2022-10-16T09:45:10.276Z",
     });
