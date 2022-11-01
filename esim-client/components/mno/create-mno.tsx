@@ -36,8 +36,8 @@ const CreateMNOComponent: NextPage = () => {
       let data = dto.messageDTO;
       const msgPayload = {
         domain: {
-          chainId: 1337,
-          name: "Mobile Network Operator Registration",
+          chainId: dto.chainId,
+          name: dto.domainName,
         },
         message: data,
         primaryType: "WeightedVector",
@@ -49,6 +49,7 @@ const CreateMNOComponent: NextPage = () => {
           WeightedVector: dto.types,
         },
       };
+      
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       // Set up variables for message signing
@@ -114,6 +115,8 @@ const CreateMNOComponent: NextPage = () => {
   };
 
   const handleSign = async (e: any) => {
+    const networkId = await provider.getNetwork();
+    const chainId = networkId.chainId;
     e.preventDefault();
     const data = new FormData(e.target);
     let mnoDTO: any = {
@@ -130,6 +133,8 @@ const CreateMNOComponent: NextPage = () => {
     };
 
     let mnoDTO_v4: any = {
+      chainId: chainId,
+      domainName: networkId.name,
       messageDTO: mnoDTO,
       types: [
         { name: "title", type: "string" },
@@ -143,6 +148,7 @@ const CreateMNOComponent: NextPage = () => {
         { name: "password", type: "string" },
       ],
     };
+
     const sig = await signMessageV4(mnoDTO_v4);
     // const sig = await signMessage(mnoDTO);
     if (sig && sig?.signature.length > 0) {
