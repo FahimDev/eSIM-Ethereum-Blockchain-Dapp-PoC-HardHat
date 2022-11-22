@@ -100,9 +100,10 @@ export default async function createMNO(
     }
 
     // split signature
-    const r = signature.slice(0, 66);
-    const s = "0x" + signature.slice(66, 130);
-    const v = parseInt(signature.slice(130, 132), 16);
+    const tempSign = signature.substring(2);
+    const r = "0x" + tempSign.substring(0, 64);
+    const s = "0x" + tempSign.substring(64, 128);
+    const v = parseInt(tempSign.substring(128, 130), 16);
     console.log({ r, s, v });
 
     // const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto), signature);
@@ -114,7 +115,7 @@ export default async function createMNO(
     // }
 
     // Hiding the Secret Before Sending the Response
-    dto.password = "**********";
+    // dto.password = "**********";
     res.status(200).json({
       id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       address: address,

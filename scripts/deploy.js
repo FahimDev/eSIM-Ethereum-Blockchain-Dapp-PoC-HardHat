@@ -21,6 +21,7 @@ async function main() {
   // Ref: https://docs.openzeppelin.com/learn/deploying-and-interacting
   const GenesisContract = await ethers.getContractFactory("SIMTokenization");
   const USIMContract = await ethers.getContractFactory("USIM");
+  const SignVerifyContract = await ethers.getContractFactory("VerifySignData");
   const ESIMManagerContract = await ethers.getContractFactory(
     "EmbeddedSIMManager"
   );
@@ -34,13 +35,14 @@ async function main() {
   // Hardhat doesn’t keep track of your deployed contracts.
   // We displayed the deployed address in our script
   const genesisContract = await GenesisContract.deploy();
+  const signVerifyContract = await SignVerifyContract.deploy();
   const usimContract = await USIMContract.deploy(89, structJS);
   const esimManagerContract = await ESIMManagerContract.deploy(
     usimContract.address
   );
   const mno = await MobileNetworkOperator.deploy("Grameenphone Ltd.", "GP");
   const mnoProfile = await MNOProfile.deploy("Communication Profile Manager", "CPM");
-  contractAddressSaver("genesisContract",genesisContract.address);
+  contractAddressSaver("genesisContract",signVerifyContract.address);
 
   // Checking Timeout and Smart Contract Timeout Status.
   await genesisContract.deployed();

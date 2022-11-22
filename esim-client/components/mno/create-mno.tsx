@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
 import { ethers } from "ethers";
 import styles from "../../styles/RegisterMNO.module.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
+const ContractAddress = require("../../../deployedContractAddress.json");
+const SignVerify = require("../../../artifacts/contracts/VerifySignData.sol/VerifySignData.json");
 
 const CreateMNOComponent: NextPage = () => {
   /**
@@ -13,8 +15,27 @@ const CreateMNOComponent: NextPage = () => {
    *  */
   const [signatures, setSignaturesFun] = useState<any>([]);
   const { active, library: provider } = useWeb3React();
+  let chainId;
   const delay = (ms: number | undefined) =>
     new Promise((res) => setTimeout(res, ms));
+
+  const SIGNING_DOMAIN_NAME = "MNOReg";
+  const SIGNING_DOMAIN_VERSION = "1";
+
+  // EIP-721 Data standard
+  const _domain = {
+    name: SIGNING_DOMAIN_NAME,
+    version: SIGNING_DOMAIN_VERSION,
+    verifyingContract: "0xF14152cEab940425A2b70940BBF244c9E0DFEC27", //ContractAddress.genesisContract,
+    chainId: 1337
+  }
+  // EIP-721 Data standard
+  const _domainDataType = [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "verifyingContract", type: "address" },
+    { name: "chainId", type: "uint256" },
+  ];
 
   const checkWallet = async () => {
     if (!window.ethereum) {
@@ -35,17 +56,11 @@ const CreateMNOComponent: NextPage = () => {
     try {
       let data = dto.messageDTO;
       const msgPayload = {
-        domain: {
-          chainId: dto.chainId,
-          name: dto.domainName,
-        },
+        domain: _domain,
         message: data,
         primaryType: "WeightedVector",
         types: {
-          EIP712Domain: [
-            { name: "name", type: "string" },
-            { name: "chainId", type: "uint256" },
-          ],
+          EIP712Domain: _domainDataType,
           WeightedVector: dto.types,
         },
       };
@@ -54,6 +69,7 @@ const CreateMNOComponent: NextPage = () => {
       const address = await signer.getAddress();
       // Set up variables for message signing
       let msgParams = JSON.stringify(msgPayload);
+      console.log(msgPayload);
       var params = [address, msgParams];
       var method = "eth_signTypedData_v4";
       const signature: string = await signGeneratorV4(method, params, address);
@@ -94,6 +110,18 @@ const CreateMNOComponent: NextPage = () => {
     return signedMessage;
   };
 
+  const executeContractMethod = async () => {
+    let abiData = JSON.stringify(SignVerify.abi);
+    const signer = provider.getSigner();
+    const contractAddress = ContractAddress.genesisContract;
+    const contract = new ethers.Contract(contractAddress, abiData, signer);
+    try {
+      window.alert(await contract.verify());
+    } catch (error){
+      console.log(error);
+    }
+  }
+
   const signMessage = async (dto: any) => {
     try {
       if ((await checkWallet()) == null) {
@@ -115,37 +143,19 @@ const CreateMNOComponent: NextPage = () => {
   };
 
   const handleSign = async (e: any) => {
-    const networkId = await provider.getNetwork();
-    const chainId = networkId.chainId;
     e.preventDefault();
+
     const data = new FormData(e.target);
     let mnoDTO: any = {
       title: data.get("title"),
-      brand: data.get("brand"),
-      network: data.get("network"),
-      prefix: data.get("prefix"),
-      mcc: data.get("mcc"),
-      mnc: data.get("mnc"),
-      state: data.get("state"),
-      username: data.get("username"),
-      email: data.get("email"),
-      password: data.get("password"),
+      brand: data.get("brand")
     };
-
+    // EIP-721 Data standard
     let mnoDTO_v4: any = {
-      chainId: chainId,
-      domainName: networkId.name,
       messageDTO: mnoDTO,
       types: [
         { name: "title", type: "string" },
-        { name: "brand", type: "string" },
-        { name: "network", type: "string" },
-        { name: "prefix", type: "string" },
-        { name: "mcc", type: "string" },
-        { name: "mnc", type: "string" },
-        { name: "username", type: "string" },
-        { name: "email", type: "string" },
-        { name: "password", type: "string" },
+        { name: "brand", type: "string" }
       ],
     };
 
@@ -160,6 +170,9 @@ const CreateMNOComponent: NextPage = () => {
       window.alert(
         `*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`
       );
+      executeContractMethod();
+      console.log(sig?.address);
+      console.log(sig?.signature);
     } else {
       window.alert("Please, check your wallet and try again.");
     }
