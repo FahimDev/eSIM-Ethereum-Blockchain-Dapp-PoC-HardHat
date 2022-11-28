@@ -54,6 +54,7 @@ async function main() {
   console.log("USIM deployed to: ", usimContract.address);
   console.log("ESIM deployed to: ", esimManagerContract.address);
   console.log("MNO deployed to: ", mno.address);
+  console.log("Copy Content Address: ", signVerifyContract.address);
   console.log("Communication-Profile-Manager deployed to: ", mnoProfile.address);
 }
 

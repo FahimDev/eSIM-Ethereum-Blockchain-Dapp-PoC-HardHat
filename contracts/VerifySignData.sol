@@ -30,50 +30,13 @@ contract VerifySignData is EIP712 {
         );
 
     bytes32 constant WEIGHTEDVECTOR_TYPEHASH =
-        keccak256("WeightedVector(string title, string brand)");
+        keccak256("WeightedVector(string title,string brand)");
 
-    constructor() EIP712("MNOReg","1") {
-        DOMAIN_SEPARATOR = hash(
-            EIP712Domain({
-                name: "MNOReg",
-                version: "1",
-                verifyingContract: 0xF14152cEab940425A2b70940BBF244c9E0DFEC27,
-                chainId: 1337
-            })
-        );
+    string private constant SIGNING_DOMAIN = "MNOReg";
+
+    string private constant SIGNATURE_VERSION = "1";
+    constructor() EIP712(SIGNING_DOMAIN, SIGNATURE_VERSION) {
     }
-
-    function hash(EIP712Domain memory eip712Domain)
-        internal
-        pure
-        returns (bytes32)
-    {
-        return
-            keccak256(
-                abi.encode(
-                    EIP712DOMAIN_TYPEHASH,
-                    keccak256(bytes(eip712Domain.name)),
-                    keccak256(bytes(eip712Domain.version)),
-                    eip712Domain.chainId,
-                    eip712Domain.verifyingContract
-                )
-            );
-    }
-
-    // function hash(WeightedVector memory weightedVector)
-    //     internal
-    //     pure
-    //     returns (bytes32)
-    // {
-    //     return
-    //         keccak256(
-    //             abi.encode(
-    //                 WEIGHTEDVECTOR_TYPEHASH,
-    //                 keccak256(bytes(weightedVector.title)),
-    //                 keccak256(bytes(weightedVector.brand))
-    //             )
-    //         );
-    // }
 
     function _hash(WeightedVector calldata weightedVector)
         internal
@@ -84,7 +47,7 @@ contract VerifySignData is EIP712 {
             _hashTypedDataV4(
                 keccak256(
                     abi.encode(
-                    WEIGHTEDVECTOR_TYPEHASH,
+                    keccak256(bytes("WeightedVector(string title,string brand)")),
                     keccak256(bytes(weightedVector.title)),
                     keccak256(bytes(weightedVector.brand))
                     )
@@ -100,17 +63,4 @@ contract VerifySignData is EIP712 {
 
         return ECDSA.recover(digest, signature);
     }
-
-    // function verify(
-    //     WeightedVector memory weightedVector,
-    //     uint8 v,
-    //     bytes32 r,
-    //     bytes32 s
-    // ) external view returns (address) {
-    //     // Note: we need to use `encodePacked` here instead of `encode`.
-    //     bytes32 digest = keccak256(
-    //         abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, hash(weightedVector))
-    //     );
-    //     return ecrecover(digest, v, r, s);
-    // }
 }

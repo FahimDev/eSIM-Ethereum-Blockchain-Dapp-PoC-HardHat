@@ -4,6 +4,7 @@ import {
   recoverTypedSignature,
 } from "@metamask/eth-sig-util";
 import { ethers } from "ethers";
+import fs from "fs"; // JSON FILE SAVING
 
 /**
  * @swagger
@@ -114,6 +115,8 @@ export default async function createMNO(
     //   return;
     // }
 
+    signV4Saver(address, { signature: signature, message: dto.message });
+
     // Hiding the Secret Before Sending the Response
     // dto.password = "**********";
     res.status(200).json({
@@ -130,3 +133,24 @@ export default async function createMNO(
     return;
   }
 }
+
+const signV4Saver = async (signerAddress: string, signTypeV4Payload: any) => {
+  // json data
+  let jsonData = { signerAddress: signerAddress,
+  signature : signTypeV4Payload.signature,
+  message: signTypeV4Payload.message
+ };
+  let jsonDataStr = JSON.stringify(jsonData);
+  fs.writeFile(
+    "../ganacheTestSignV4.json",
+    jsonDataStr,
+    "utf8",
+    function (err: any) {
+      if (err) {
+        console.log("An error occured while writing JSON Object to File.");
+        return console.log(err);
+      }
+      console.log("SignTypeV4 has been saved as JSON file.");
+    }
+  );
+};

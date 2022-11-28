@@ -26,9 +26,9 @@ const CreateMNOComponent: NextPage = () => {
   const _domain = {
     name: SIGNING_DOMAIN_NAME,
     version: SIGNING_DOMAIN_VERSION,
-    verifyingContract: "0xF14152cEab940425A2b70940BBF244c9E0DFEC27", //ContractAddress.genesisContract,
-    chainId: 1337
-  }
+    verifyingContract: ContractAddress.genesisContract,
+    chainId: 1337,
+  };
   // EIP-721 Data standard
   const _domainDataType = [
     { name: "name", type: "string" },
@@ -64,7 +64,7 @@ const CreateMNOComponent: NextPage = () => {
           WeightedVector: dto.types,
         },
       };
-      
+
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       // Set up variables for message signing
@@ -74,7 +74,7 @@ const CreateMNOComponent: NextPage = () => {
       var method = "eth_signTypedData_v4";
       const signature: string = await signGeneratorV4(method, params, address);
       return {
-        data,
+        msgPayload,
         signature,
         address,
       };
@@ -117,10 +117,10 @@ const CreateMNOComponent: NextPage = () => {
     const contract = new ethers.Contract(contractAddress, abiData, signer);
     try {
       window.alert(await contract.verify());
-    } catch (error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const signMessage = async (dto: any) => {
     try {
@@ -142,20 +142,49 @@ const CreateMNOComponent: NextPage = () => {
     }
   };
 
+  const postAPI = async (sig: any) => {
+    /***********************************|
+   |        API Integration             |
+   |__________________________________*/
+    let context: any = {
+      dto: sig?.msgPayload,
+      signature: sig?.signature,
+      address: sig?.address,
+    };
+    const rawResponse = await fetch("/api/create-mno", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(context),
+    });
+    if(rawResponse.status == 200){
+      window.alert("Sign Type V4 Verified by MetaMask Method (js) ! Sign saved as JSON File for R&D.");
+    }else if(rawResponse.status == 404){
+      window.alert("Sign Type V4 is Invalid!");
+    }
+    else{
+      window.alert("Something went wrong in Sign Type V4 Verification Error Unknown!");
+    }
+    // const content = await rawResponse.json();
+
+  };
+
   const handleSign = async (e: any) => {
     e.preventDefault();
 
     const data = new FormData(e.target);
     let mnoDTO: any = {
       title: data.get("title"),
-      brand: data.get("brand")
+      brand: data.get("brand"),
     };
     // EIP-721 Data standard
     let mnoDTO_v4: any = {
       messageDTO: mnoDTO,
       types: [
         { name: "title", type: "string" },
-        { name: "brand", type: "string" }
+        { name: "brand", type: "string" },
       ],
     };
 
@@ -167,12 +196,18 @@ const CreateMNOComponent: NextPage = () => {
        * It keeps the continuity of the index and assign data and a new empty index.
        *   */
       setSignaturesFun([...signatures, sig]);
+      /**
+       * ##########--> Optional chaining (?.) <--##########
+       * The optional chaining (?.) operator accesses an object's property or calls a function.
+       * If the object is undefined or null, it returns undefined instead of throwing an error.
+       */
       window.alert(
         `*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`
       );
       executeContractMethod();
-      console.log(sig?.address);
-      console.log(sig?.signature);
+      postAPI(sig);
+      //console.log(sig?.address);
+      //console.log(sig?.signature);
     } else {
       window.alert("Please, check your wallet and try again.");
     }
