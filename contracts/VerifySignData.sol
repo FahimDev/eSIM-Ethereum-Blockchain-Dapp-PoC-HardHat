@@ -47,7 +47,7 @@ contract VerifySignData is EIP712 {
             _hashTypedDataV4(
                 keccak256(
                     abi.encode(
-                    keccak256(bytes("WeightedVector(string title,string brand)")),
+                    keccak256("WeightedVector(string title,string brand)"),
                     keccak256(bytes(weightedVector.title)),
                     keccak256(bytes(weightedVector.brand))
                     )
@@ -57,10 +57,9 @@ contract VerifySignData is EIP712 {
 
     function _verify(
         WeightedVector calldata weightedVector,
-        bytes memory signature
+        bytes calldata signature
     ) external view returns (address) {
         bytes32 digest = _hash(weightedVector);
-
         return ECDSA.recover(digest, signature);
     }
 }
