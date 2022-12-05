@@ -72,6 +72,11 @@ const CreateMNOComponent: NextPage = () => {
       console.log(msgPayload);
       var params = [address, msgParams];
       var method = "eth_signTypedData_v4";
+      // Mustaqur Bhai's Approach 
+      // let obj = await createWeightedVector(data.title, data.brand, ContractAddress.genesisContract);
+      // const signature: string = obj.signature;
+      // console.log({signature})
+      // This signGeneratorV4() method is strictly following MetaMask's Sign Type V4 process.
       const signature: string = await signGeneratorV4(method, params, address);
       return {
         msgPayload,
@@ -110,17 +115,17 @@ const CreateMNOComponent: NextPage = () => {
     return signedMessage;
   };
 
-  const executeContractMethod = async () => {
-    let abiData = JSON.stringify(SignVerify.abi);
-    const signer = provider.getSigner();
-    const contractAddress = ContractAddress.genesisContract;
-    const contract = new ethers.Contract(contractAddress, abiData, signer);
-    try {
-      window.alert(await contract.verify());
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const executeContractMethod = async () => {
+  //   let abiData = JSON.stringify(SignVerify.abi);
+  //   const signer = provider.getSigner();
+  //   const contractAddress = ContractAddress.genesisContract;
+  //   const contract = new ethers.Contract(contractAddress, abiData, signer);
+  //   try {
+  //     window.alert(await contract.verify());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const signMessage = async (dto: any) => {
     try {
@@ -159,16 +164,56 @@ const CreateMNOComponent: NextPage = () => {
       },
       body: JSON.stringify(context),
     });
-    if(rawResponse.status == 200){
-      window.alert("Sign Type V4 Verified by MetaMask Method (js) ! Sign saved as JSON File for R&D.");
-    }else if(rawResponse.status == 404){
+    if (rawResponse.status == 200) {
+      window.alert(
+        "Sign Type V4 Verified by MetaMask Method (js) ! Sign saved as JSON File for R&D."
+      );
+    } else if (rawResponse.status == 404) {
       window.alert("Sign Type V4 is Invalid!");
-    }
-    else{
-      window.alert("Something went wrong in Sign Type V4 Verification Error Unknown!");
+    } else {
+      window.alert(
+        "Something went wrong in Sign Type V4 Verification Error Unknown!"
+      );
     }
     // const content = await rawResponse.json();
+  };
 
+  const createWeightedVector = async (
+    title: string,
+    brand: string,
+    contractAddress: string
+  ) => {
+    const weightedVector = { title, brand };
+    const domain = _signingDomain(contractAddress);
+    console.log(weightedVector, domain);
+    const types = {
+      WeightedVector: [
+        { name: "title", type: "string" },
+        { name: "brand", type: "string" },
+      ],
+    };
+    const signature = await getSignature(domain, types, weightedVector);
+    return {
+      ...weightedVector,
+      signature,
+    };
+  };
+
+  const _signingDomain = (contractAddress: string) => {
+    console.log(contractAddress);
+    const _domain = {
+      name: SIGNING_DOMAIN_NAME,
+      version: SIGNING_DOMAIN_VERSION,
+      verifyingContract: contractAddress,
+      chainId: 1337,
+    };
+    return _domain;
+  };
+
+  const getSignature = async (domain: any, types: any, voucher: any) => {
+    const signer = provider.getSigner();
+    const signature = await signer._signTypedData(domain, types, voucher);
+    return signature;
   };
 
   const handleSign = async (e: any) => {
@@ -188,7 +233,10 @@ const CreateMNOComponent: NextPage = () => {
       ],
     };
 
+
+    ///  ------------------------------
     const sig = await signMessageV4(mnoDTO_v4);
+    
     // const sig = await signMessage(mnoDTO);
     if (sig && sig?.signature.length > 0) {
       /**
@@ -204,9 +252,9 @@ const CreateMNOComponent: NextPage = () => {
       window.alert(
         `*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`
       );
-      executeContractMethod();
+      // executeContractMethod();
       postAPI(sig);
-      //console.log(sig?.address);
+      console.log(sig);
       //console.log(sig?.signature);
     } else {
       window.alert("Please, check your wallet and try again.");

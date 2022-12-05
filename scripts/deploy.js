@@ -73,7 +73,7 @@ function contractAddressSaver(key_name, value){
   //var jsonContent = JSON.stringify(jsonData);
   fs.writeFile("deployedContractAddress.json", jsonData, 'utf8', function (err) {
     if (err) {
-        console.log("An error occured while writing JSON Object to File.");
+        console.log("An error occurred while writing JSON Object to File.");
         return console.log(err);
     }
     console.log("JSON file has been saved.");

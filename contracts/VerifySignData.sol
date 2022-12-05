@@ -7,9 +7,6 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 contract VerifySignData is EIP712 {
     using ECDSA for bytes32;
 
-    // https://github.com/apurbapokharel/EIP712Example/blob/master/contracts/SimpleStorage.sol
-    // https://gist.github.com/markodayan/e05f524b915f129c4f8500df816a369b
-
     bytes32 DOMAIN_SEPARATOR;
 
     struct EIP712Domain {
@@ -22,7 +19,10 @@ contract VerifySignData is EIP712 {
     struct WeightedVector {
         string title;
         string brand;
+        bytes signature;
     }
+
+    address public checkSigner;
 
     bytes32 constant EIP712DOMAIN_TYPEHASH =
         keccak256(
@@ -35,31 +35,43 @@ contract VerifySignData is EIP712 {
     string private constant SIGNING_DOMAIN = "MNOReg";
 
     string private constant SIGNATURE_VERSION = "1";
-    constructor() EIP712(SIGNING_DOMAIN, SIGNATURE_VERSION) {
+
+    constructor() EIP712(SIGNING_DOMAIN, SIGNATURE_VERSION) {}
+
+    function mySigTest(WeightedVector calldata weightedVector) public {
+        // make sure signature is valid and get the address of the signer
+        // address signer = _verify(voucher);
+        address signer = _verify(weightedVector);
+        checkSigner = signer;
     }
 
-    function _hash(WeightedVector calldata weightedVector)
-        internal
-        view
-        returns (bytes32)
-    {
+    function resetSigner() public {
+        checkSigner = address(0x0);
+    }
+
+    function getSigner() public view returns (address) {
+        return checkSigner;
+    }
+
+    function _hash(
+        WeightedVector calldata weightedVector
+    ) internal view returns (bytes32) {
         return
             _hashTypedDataV4(
                 keccak256(
                     abi.encode(
-                    keccak256("WeightedVector(string title,string brand)"),
-                    keccak256(bytes(weightedVector.title)),
-                    keccak256(bytes(weightedVector.brand))
+                        keccak256("WeightedVector(string title,string brand)"),
+                        keccak256(bytes(weightedVector.title)),
+                        keccak256(bytes(weightedVector.brand))
                     )
                 )
             );
     }
 
     function _verify(
-        WeightedVector calldata weightedVector,
-        bytes calldata signature
-    ) external view returns (address) {
+        WeightedVector calldata weightedVector
+    ) internal view returns (address) {
         bytes32 digest = _hash(weightedVector);
-        return ECDSA.recover(digest, signature);
+        return ECDSA.recover(digest, weightedVector.signature);
     }
 }

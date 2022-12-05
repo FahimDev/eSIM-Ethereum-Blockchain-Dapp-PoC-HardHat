@@ -97,6 +97,8 @@ export default async function createMNO(
       // https://bitflyer.com/en-jp/faq/5-10
       res.statusCode = 401;
       res.end("Invalid");
+      // Even if the sign is invalid at MetaMask's Default Method we will store the signature for further investigation.
+      signV4Saver(address, { signature: signature, message: dto.message });
       return;
     }
 
@@ -136,10 +138,11 @@ export default async function createMNO(
 
 const signV4Saver = async (signerAddress: string, signTypeV4Payload: any) => {
   // json data
-  let jsonData = { signerAddress: signerAddress,
-  signature : signTypeV4Payload.signature,
-  message: signTypeV4Payload.message
- };
+  let jsonData = {
+    signerAddress: signerAddress,
+    signature: signTypeV4Payload.signature,
+    message: signTypeV4Payload.message,
+  };
   let jsonDataStr = JSON.stringify(jsonData);
   fs.writeFile(
     "../ganacheTestSignV4.json",
