@@ -1,21 +1,14 @@
 const fs = require("fs");
 const { getDeployedPath } = require("./common/file");
-const { getPricingInstance } = require("./common/contract");
+const { getInstance } = require("./common/contract");
 const { getWallet } = require("./common/wallet");
 const ContractAddress = require("../deployedContractAddress.json");
 const ganacheTestSignV4 = require("../ganacheTestSignV4.json");
 
-// const network = process.env.NETWORK || 'ganache'
-// const branch = process.env.BRANCH || 'develop'
-
 async function main() {
-  //   let newPrice = 1050;
-
-  //   const jsonPath = getDeployedPath(network, branch);
-  //   let content = JSON.parse(fs.readFileSync(jsonPath).toString());
 
   const adminWallet = getWallet();
-  const verifyContract = getPricingInstance(
+  const verifyContract = getInstance(
     ContractAddress.genesisContract,
     adminWallet
   );

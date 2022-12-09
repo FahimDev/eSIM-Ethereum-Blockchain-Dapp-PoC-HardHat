@@ -2,7 +2,7 @@
 const { ethers } = require('ethers');
 const { getPricingABI } = require('./file');
 
-const getPricingInstance = (
+const getInstance = (
     address,
     wallet
   ) => {
@@ -11,4 +11,4 @@ const getPricingInstance = (
     return contract
 }
 
-module.exports = {getPricingInstance};
+module.exports = {getInstance};

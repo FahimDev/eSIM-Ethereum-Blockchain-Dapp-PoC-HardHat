@@ -15,19 +15,19 @@ const CreateMNOComponent: NextPage = () => {
    *  */
   const [signatures, setSignaturesFun] = useState<any>([]);
   const { active, library: provider } = useWeb3React();
-  let chainId;
   const delay = (ms: number | undefined) =>
     new Promise((res) => setTimeout(res, ms));
 
   const SIGNING_DOMAIN_NAME = "MNOReg";
   const SIGNING_DOMAIN_VERSION = "1";
+  const SIGNING_DOMAIN_CHAIN_ID = 5;
 
   // EIP-721 Data standard
   const _domain = {
     name: SIGNING_DOMAIN_NAME,
     version: SIGNING_DOMAIN_VERSION,
     verifyingContract: ContractAddress.genesisContract,
-    chainId: 1337,
+    chainId: SIGNING_DOMAIN_CHAIN_ID,
   };
   // EIP-721 Data standard
   const _domainDataType = [
@@ -73,11 +73,11 @@ const CreateMNOComponent: NextPage = () => {
       var params = [address, msgParams];
       var method = "eth_signTypedData_v4";
       // Mustaqur Bhai's Approach 
-      // let obj = await createWeightedVector(data.title, data.brand, ContractAddress.genesisContract);
-      // const signature: string = obj.signature;
+      let obj = await createWeightedVector(data.title, data.brand, ContractAddress.genesisContract);
+      const signature: string = obj.signature;
       // console.log({signature})
       // This signGeneratorV4() method is strictly following MetaMask's Sign Type V4 process.
-      const signature: string = await signGeneratorV4(method, params, address);
+      // const signature: string = await signGeneratorV4(method, params, address);
       return {
         msgPayload,
         signature,
@@ -205,7 +205,7 @@ const CreateMNOComponent: NextPage = () => {
       name: SIGNING_DOMAIN_NAME,
       version: SIGNING_DOMAIN_VERSION,
       verifyingContract: contractAddress,
-      chainId: 1337,
+      chainId: SIGNING_DOMAIN_CHAIN_ID,
     };
     return _domain;
   };
