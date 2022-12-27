@@ -9,7 +9,7 @@ const SwaggerUI = dynamic<{
 }>(import('swagger-ui-react'), { ssr: false });
 
 function ApiDoc({ spec }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <SwaggerUI spec={spec} />;
+  return <div style={{padding: "80px"}}><SwaggerUI spec={spec} /></div>;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -17,7 +17,7 @@ export const getStaticProps: GetStaticProps = async () => {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: 'Next Swagger API Example',
+        title: 'eSIM Dapp Swagger API Tool Suit',
         version: '1.0',
       },
     },

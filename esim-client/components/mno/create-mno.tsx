@@ -1,17 +1,290 @@
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import { ethers } from "ethers";
 import styles from "../../styles/RegisterMNO.module.css";
+import { useEffect, useRef, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
+const ContractAddress = require("../../../deployedContractAddress.json");
+const SignVerify = require("../../../artifacts/contracts/VerifySignData.sol/VerifySignData.json");
 
 const CreateMNOComponent: NextPage = () => {
+  /**
+   * In useState first element can be an object and
+   * the second elementr is a value setter function of that object
+   *  */
+  const [signatures, setSignaturesFun] = useState<any>([]);
+  const { active, library: provider } = useWeb3React();
+  const delay = (ms: number | undefined) =>
+    new Promise((res) => setTimeout(res, ms));
+
+  const SIGNING_DOMAIN_NAME = "MNOReg";
+  const SIGNING_DOMAIN_VERSION = "1";
+  const SIGNING_DOMAIN_CHAIN_ID = 5;
+
+  // EIP-721 Data standard
+  const _domain = {
+    name: SIGNING_DOMAIN_NAME,
+    version: SIGNING_DOMAIN_VERSION,
+    verifyingContract: ContractAddress.genesisContract,
+    chainId: SIGNING_DOMAIN_CHAIN_ID,
+  };
+  // EIP-721 Data standard
+  const _domainDataType = [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "verifyingContract", type: "address" },
+    { name: "chainId", type: "uint256" },
+  ];
+
+  const checkWallet = async () => {
+    if (!window.ethereum) {
+      throw new Error("No crypto wallet found. Please install it.");
+      return null;
+    }
+    if (!active) {
+      window.alert("Your wallet is not connected!");
+      return null;
+    }
+    return "Connected";
+  };
+
+  const signMessageV4 = async (dto: any) => {
+    if ((await checkWallet()) == null) {
+      return null;
+    }
+    try {
+      let data = dto.messageDTO;
+
+      const msgPayload = {
+        domain: _domain,
+        message: data,
+        primaryType: "WeightedVector",
+        types: {
+          EIP712Domain: _domainDataType,
+          WeightedVector: dto.types,
+        },
+      };
+
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      // Set up variables for message signing
+      let msgParams = JSON.stringify(msgPayload);
+      console.log(msgPayload);
+      var params = [address, msgParams];
+      var method = "eth_signTypedData_v4";
+      // Mustaqur Bhai's Approach
+      let obj = await createWeightedVector(
+        data.title,
+        data.brand,
+        data.network,
+        data.prefix,
+        data.mcc,
+        data.mnc,
+        { WeightedVector: dto.types },
+        ContractAddress.genesisContract
+      );
+      const signature: string = obj.signature;
+      // This signGeneratorV4() method is strictly following MetaMask's Sign Type V4 process.
+      // const signature: string = await signGeneratorV4(method, params, address);
+      return {
+        msgPayload,
+        signature,
+        address,
+      };
+    } catch (err) {
+      window.alert(err);
+      return null;
+    }
+  };
+
+  const signGeneratorV4 = async (
+    method: string,
+    params: any[],
+    address: string
+  ) => {
+    // Send signature request
+    let signedMessage: string = "";
+    await window.ethereum.sendAsync(
+      {
+        method,
+        params,
+        address,
+      },
+      async function (err: Error, result: any) {
+        if (err) {
+          window.alert(err.message);
+          return console.log(err);
+        }
+        // Store retrieved signature result
+        signedMessage = result.result;
+      }
+    );
+    // await delay(7000);
+    return signedMessage;
+  };
+
+  // const executeContractMethod = async () => {
+  //   let abiData = JSON.stringify(SignVerify.abi);
+  //   const signer = provider.getSigner();
+  //   const contractAddress = ContractAddress.genesisContract;
+  //   const contract = new ethers.Contract(contractAddress, abiData, signer);
+  //   try {
+  //     window.alert(await contract.verify());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const signMessage = async (dto: any) => {
+    try {
+      if ((await checkWallet()) == null) {
+        return null;
+      }
+      const signer = provider.getSigner();
+      const unsignedJSON = JSON.stringify(dto);
+      const signature = await signer.signMessage(unsignedJSON);
+      const address = await signer.getAddress();
+
+      return {
+        dto,
+        signature,
+        address,
+      };
+    } catch (err) {
+      window.alert(err);
+    }
+  };
+
+  const postAPI = async (sig: any) => {
+    /***********************************|
+   |        API Integration             |
+   |__________________________________*/
+    let context: any = {
+      dto: sig?.msgPayload,
+      signature: sig?.signature,
+      address: sig?.address,
+    };
+    const rawResponse = await fetch("/api/create-mno", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(context),
+    });
+    if (rawResponse.status == 200) {
+      window.alert(
+        "Sign Type V4 Verified by MetaMask Method (js) ! Sign saved as JSON File for R&D."
+      );
+    } else if (rawResponse.status == 404) {
+      window.alert("Sign Type V4 is Invalid!");
+    } else {
+      window.alert(
+        "Something went wrong in Sign Type V4 Verification Error Unknown!"
+      );
+    }
+    // const content = await rawResponse.json();
+  };
+
+  const createWeightedVector = async (
+    title: string,
+    brand: string,
+    network: string,
+    prefix: number,
+    mcc: number,
+    mnc: number,
+    types: any,
+    contractAddress: string
+  ) => {
+    const weightedVector = { title, brand, network, prefix, mcc, mnc };
+    const domain = _signingDomain(contractAddress);
+    console.log(weightedVector, domain, types);
+    const signature = await getSignature(domain, types, weightedVector);
+    return {
+      ...weightedVector,
+      signature,
+    };
+  };
+
+  const _signingDomain = (contractAddress: string) => {
+    console.log(contractAddress);
+    const _domain = {
+      name: SIGNING_DOMAIN_NAME,
+      version: SIGNING_DOMAIN_VERSION,
+      verifyingContract: contractAddress,
+      chainId: SIGNING_DOMAIN_CHAIN_ID,
+    };
+    return _domain;
+  };
+
+  const getSignature = async (domain: any, types: any, voucher: any) => {
+    const signer = provider.getSigner();
+    const signature = await signer._signTypedData(domain, types, voucher);
+    return signature;
+  };
+
+  const handleSign = async (e: any) => {
+    e.preventDefault();
+
+    const data = new FormData(e.target);
+    console.log(data.values());
+    let mnoDTO: any = {
+      title: data.get("title"),
+      brand: data.get("brand"),
+      network: data.get("network"),
+      prefix: data.get("prefix"),
+      mcc: data.get("mcc"),
+      mnc: data.get("mnc"),
+    };
+    // EIP-721 Data standard
+    let mnoDTO_v4: any = {
+      messageDTO: mnoDTO,
+      types: [
+        { name: "title", type: "string" },
+        { name: "brand", type: "string" },
+        { name: "network", type: "string" },
+        { name: "prefix", type: "uint256" },
+        { name: "mcc", type: "uint256" },
+        { name: "mnc", type: "uint256" },
+      ],
+    };
+
+    ///  ------------------------------
+    const sig = await signMessageV4(mnoDTO_v4);
+
+    // const sig = await signMessage(mnoDTO);
+    if (sig && sig?.signature.length > 0) {
+      /**
+       * The use of '...' in the array is to prevent the data override issue in any index
+       * It keeps the continuity of the index and assign data and a new empty index.
+       *   */
+      setSignaturesFun([...signatures, sig]);
+      /**
+       * ##########--> Optional chaining (?.) <--##########
+       * The optional chaining (?.) operator accesses an object's property or calls a function.
+       * If the object is undefined or null, it returns undefined instead of throwing an error.
+       */
+      window.alert(
+        `*** SIGNING DATA SUCCESSFUL ***\n ===> Signer Address: ${sig?.address} \n ===> Signed Data: ${sig?.signature}`
+      );
+      // executeContractMethod();
+      postAPI(sig);
+      console.log(sig);
+      //console.log(sig?.signature);
+    } else {
+      window.alert("Please, check your wallet and try again.");
+    }
+  };
   return (
     <div className={styles.container}>
       <main className={styles.main}>
         <div className="flex flex-row flex-wrap justify-center">
           <div className="basis-3/6">
-            <form className="shadow-xl border-double border-4 border-cyan-600 rounded-lg border-x-cyan-100">
+            <form
+              onSubmit={handleSign}
+              className="shadow-xl border-double border-4 border-cyan-600 rounded-lg border-x-cyan-100"
+            >
               <div className="p-8">
                 <h1 className="capitalize hover:uppercase text-2xl">
                   Register
@@ -134,6 +407,7 @@ const CreateMNOComponent: NextPage = () => {
                     <select
                       className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
+                      name="state"
                     >
                       <option>Active</option>
                       <option>Inactive</option>
@@ -158,6 +432,7 @@ const CreateMNOComponent: NextPage = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id="username"
+                      name="username"
                       type="text"
                       placeholder="<Brand><MNC><OfficeID>"
                     />
@@ -172,6 +447,7 @@ const CreateMNOComponent: NextPage = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="example@official.com"
                     />
@@ -185,6 +461,7 @@ const CreateMNOComponent: NextPage = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="password"
+                      name="password"
                       type="password"
                       placeholder="******************"
                     />
@@ -207,7 +484,7 @@ const CreateMNOComponent: NextPage = () => {
                 <div className="flex items-center justify-center p-4">
                   <span className="relative inline-flex">
                     <button
-                      type="button"
+                      type="submit"
                       className={`${styles.registerbtn} inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-sky-500 bg-white dark:bg-slate-800 transition ease-in-out duration-150 cursor-not-allowed ring-1 ring-slate-900/10 dark:ring-slate-200/20`}
                     >
                       Get Register

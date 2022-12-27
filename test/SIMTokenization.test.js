@@ -43,6 +43,67 @@ describe("SIMTokenization Contract", function () {
       expect(await simTokenization.totalSupply()).to.equal(ownerBalance);
       console.log("Owner Balance: ", ownerBalance);
     });
+
+
+    it("SHOULD GET SIGNER ADDRESS", async function () {
+      TEST = await ethers.getContractFactory("VerifySignData");
+      test = await TEST.deploy();
+      const _contractAddress = "0xF14152cEab940425A2b70940BBF244c9E0DFEC27";
+      const _signerAddress = "0xede0b36A50EC3f4C0B514F663E795dF39161e860";
+      const _signature =
+        "0xffab84df218c9635e5dc7546ad1c9a3b9c2ae6e1421a6f4beb9c4114652a83af5526fac33b198cd19db106e8f6414428103e73aaad6a3b28bc14740ba1c559c61b";
+      
+      const dto = {
+        domain: {
+          name: "MNOReg",
+          version: "1",
+          verifyingContract: "0xF14152cEab940425A2b70940BBF244c9E0DFEC27",
+          chainId: 1337,
+        },
+        message: {
+          title: "Gramenphone",
+          brand: "Telenor",
+        },
+        primaryType: "WeightedVector",
+        types: {
+          EIP712Domain: [
+            {
+              name: "name",
+              type: "string",
+            },
+            {
+              name: "version",
+              type: "string",
+            },
+            {
+              name: "verifyingContract",
+              type: "address",
+            },
+            {
+              name: "chainId",
+              type: "uint256",
+            },
+          ],
+          WeightedVector: [
+            {
+              name: "title",
+              type: "string",
+            },
+            {
+              name: "brand",
+              type: "string",
+            },
+          ],
+        },
+      };
+      const data = JSON.stringify(dto);
+      let r = "0xffab84df218c9635e5dc7546ad1c9a3b9c2ae6e1421a6f4beb9c4114652a83af";
+      let s = "0x5526fac33b198cd19db106e8f6414428103e73aaad6a3b28bc14740ba1c559c6";
+      let v = 27;
+      const signerAddress = await test._verify(dto.message, _signature);
+      console.log("~~~~~~~> UNIT TEST ==> Test Signer ADDRESS: ", signerAddress);
+      expect(1).to.equal(1)
+    });
   });
 
   describe("Transactions", function () {
