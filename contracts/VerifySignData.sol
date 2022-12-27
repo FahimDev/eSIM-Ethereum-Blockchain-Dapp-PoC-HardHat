@@ -19,6 +19,10 @@ contract VerifySignData is EIP712 {
     struct WeightedVector {
         string title;
         string brand;
+        string network;
+        uint256 prefix;
+        uint256 mcc;
+        uint256 mnc;
         bytes signature;
     }
 
@@ -30,7 +34,7 @@ contract VerifySignData is EIP712 {
         );
 
     bytes32 constant WEIGHTEDVECTOR_TYPEHASH =
-        keccak256("WeightedVector(string title,string brand)");
+        keccak256("WeightedVector(string title,string brand,string network,uint256 prefix,uint256 mcc,uint256 mnc)");
 
     string private constant SIGNING_DOMAIN = "MNOReg";
 
@@ -60,9 +64,13 @@ contract VerifySignData is EIP712 {
             _hashTypedDataV4(
                 keccak256(
                     abi.encode(
-                        keccak256("WeightedVector(string title,string brand)"),
+                        keccak256("WeightedVector(string title,string brand,string network,uint256 prefix,uint256 mcc,uint256 mnc)"),
                         keccak256(bytes(weightedVector.title)),
-                        keccak256(bytes(weightedVector.brand))
+                        keccak256(bytes(weightedVector.brand)),
+                        keccak256(bytes(weightedVector.network)),
+                        weightedVector.prefix,
+                        weightedVector.mcc,
+                        weightedVector.mnc
                     )
                 )
             );

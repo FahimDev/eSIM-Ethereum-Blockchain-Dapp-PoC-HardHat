@@ -16,6 +16,10 @@ async function main() {
   let weightedVector = {};
   weightedVector.title = message.title;
   weightedVector.brand = message.brand;
+  weightedVector.network = message.network;
+  weightedVector.prefix = message.prefix;
+  weightedVector.mcc = message.mcc;
+  weightedVector.mnc = message.mnc;
   weightedVector.signature = ganacheTestSignV4.signature;
   console.log({ weightedVector });
   let tx = await verifyContract.mySigTest(weightedVector);
