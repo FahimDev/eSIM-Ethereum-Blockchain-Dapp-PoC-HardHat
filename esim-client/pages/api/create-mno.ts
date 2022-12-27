@@ -86,36 +86,45 @@ export default async function createMNO(
    |        Sign Typed Data v4          |
    |__________________________________*/
 
-    // Verify signature with recoverTypedSignature()
-    let restored = recoverTypedSignature({
-      signature,
-      version: SignTypedDataVersion.V4,
-      data: dto as any,
-    });
-    // Check to confirm that the signature address is the same as the original user wallet address
-    if (restored.toUpperCase() !== address.toUpperCase()) {
-      // https://bitflyer.com/en-jp/faq/5-10
-      res.statusCode = 401;
-      res.end("Invalid");
-      // Even if the sign is invalid at MetaMask's Default Method we will store the signature for further investigation.
-      signV4Saver(address, { signature: signature, message: dto.message });
-      return;
-    }
+    // // Verify signature with recoverTypedSignature()
+    // let restored = recoverTypedSignature({
+    //   signature,
+    //   version: SignTypedDataVersion.V4,
+    //   data: dto as any,
+    // });
+    // // Check to confirm that the signature address is the same as the original user wallet address
+    // if (restored.toUpperCase() !== address.toUpperCase()) {
+    //   // https://bitflyer.com/en-jp/faq/5-10
+    //   res.statusCode = 401;
+    //   res.end("Invalid");
+    //   // Even if the sign is invalid at MetaMask's Default Method we will store the signature for further investigation.
+    //   signV4Saver(address, { signature: signature, message: dto.message });
+    //   return;
+    // }
 
     // split signature
     const tempSign = signature.substring(2);
     const r = "0x" + tempSign.substring(0, 64);
     const s = "0x" + tempSign.substring(64, 128);
     const v = parseInt(tempSign.substring(128, 130), 16);
-    console.log({ r, s, v });
 
-    // const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto), signature);
+    // const signerAddr = await ethers.utils.verifyMessage(JSON.stringify(dto.message), signature);
 
-    // if (signerAddr !== address) {
-    //   res.statusCode = 401;
-    //   res.end("Invalid");
-    //   return;
-    // }
+    // Solution Ref: https://github.com/ethers-io/ethers.js/issues/2595
+    const signerAddr = ethers.utils.verifyTypedData(
+      dto.domain,
+      { WeightedVector: dto.types.WeightedVector }, // <-- Make Sure the Key is same as your DTO types key- name
+      dto.message,
+      signature
+    );
+
+    if (signerAddr !== address) {
+      res.statusCode = 401;
+      res.end("Invalid");
+      // Even if the sign is invalid at MetaMask's Default Method we will store the signature for further investigation.
+      signV4Saver(address, { signature: signature, message: dto.message });
+      return;
+    }
 
     signV4Saver(address, { signature: signature, message: dto.message });
 
