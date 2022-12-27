@@ -1,1 +1,1 @@
-{"signerAddress":"0xCB6F2B16a15560197342e6afa6b3A5620884265B","signature":"0x0933b0501cdd4ba7488aa4cc928c849a3fc56ecfc5c285edd3693ba7e25c06e44ed7252669591040654a7204bb7515485e4ce67f6b02a207176d0e6d72b1cc591c","message":{"title":"Tel&Tlk","brand":"Telitalk"}}
+{"signerAddress":"0xCB6F2B16a15560197342e6afa6b3A5620884265B","signature":"0x92ad6aafbd6c65fbf71753c24e0413285d230577d596106fa9d5c5294c6092982843b14bc42efd3499ada3775baa6e2f7037980e22ef07130fcacec2eaf6b80d1b","message":{"title":"Grameenphone","brand":"Telenor","network":"GP","prefix":"17","mcc":"123","mnc":"321"}}

@@ -55,6 +55,7 @@ const CreateMNOComponent: NextPage = () => {
     }
     try {
       let data = dto.messageDTO;
+
       const msgPayload = {
         domain: _domain,
         message: data,
@@ -72,10 +73,18 @@ const CreateMNOComponent: NextPage = () => {
       console.log(msgPayload);
       var params = [address, msgParams];
       var method = "eth_signTypedData_v4";
-      // Mustaqur Bhai's Approach 
-      let obj = await createWeightedVector(data.title, data.brand, ContractAddress.genesisContract);
+      // Mustaqur Bhai's Approach
+      let obj = await createWeightedVector(
+        data.title,
+        data.brand,
+        data.network,
+        data.prefix,
+        data.mcc,
+        data.mnc,
+        { WeightedVector: dto.types },
+        ContractAddress.genesisContract
+      );
       const signature: string = obj.signature;
-      // console.log({signature})
       // This signGeneratorV4() method is strictly following MetaMask's Sign Type V4 process.
       // const signature: string = await signGeneratorV4(method, params, address);
       return {
@@ -111,7 +120,7 @@ const CreateMNOComponent: NextPage = () => {
         signedMessage = result.result;
       }
     );
-    await delay(7000);
+    // await delay(7000);
     return signedMessage;
   };
 
@@ -181,17 +190,16 @@ const CreateMNOComponent: NextPage = () => {
   const createWeightedVector = async (
     title: string,
     brand: string,
+    network: string,
+    prefix: number,
+    mcc: number,
+    mnc: number,
+    types: any,
     contractAddress: string
   ) => {
-    const weightedVector = { title, brand };
+    const weightedVector = { title, brand, network, prefix, mcc, mnc };
     const domain = _signingDomain(contractAddress);
-    console.log(weightedVector, domain);
-    const types = {
-      WeightedVector: [
-        { name: "title", type: "string" },
-        { name: "brand", type: "string" },
-      ],
-    };
+    console.log(weightedVector, domain, types);
     const signature = await getSignature(domain, types, weightedVector);
     return {
       ...weightedVector,
@@ -220,9 +228,14 @@ const CreateMNOComponent: NextPage = () => {
     e.preventDefault();
 
     const data = new FormData(e.target);
+    console.log(data.values());
     let mnoDTO: any = {
       title: data.get("title"),
       brand: data.get("brand"),
+      network: data.get("network"),
+      prefix: data.get("prefix"),
+      mcc: data.get("mcc"),
+      mnc: data.get("mnc"),
     };
     // EIP-721 Data standard
     let mnoDTO_v4: any = {
@@ -230,13 +243,16 @@ const CreateMNOComponent: NextPage = () => {
       types: [
         { name: "title", type: "string" },
         { name: "brand", type: "string" },
+        { name: "network", type: "string" },
+        { name: "prefix", type: "uint256" },
+        { name: "mcc", type: "uint256" },
+        { name: "mnc", type: "uint256" },
       ],
     };
 
-
     ///  ------------------------------
     const sig = await signMessageV4(mnoDTO_v4);
-    
+
     // const sig = await signMessage(mnoDTO);
     if (sig && sig?.signature.length > 0) {
       /**
