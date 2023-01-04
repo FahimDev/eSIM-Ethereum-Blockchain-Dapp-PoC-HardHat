@@ -25,7 +25,10 @@ contract MobileNetworkOperator {
         address signer
     );
 
-    constructor(string memory operatorTitle_, string memory contractSymbol_) {
+    function initialize(
+        string memory operatorTitle_,
+        string memory contractSymbol_
+    ) external {
         title = operatorTitle_;
         symbol = contractSymbol_;
         owner = msg.sender;
@@ -44,11 +47,9 @@ contract MobileNetworkOperator {
         return _mnoOrg.length;
     }
 
-    function getProfilesByMNOId(uint mnoId)
-        external
-        view
-        returns (MNOCommunicationProfile[] memory)
-    {
+    function getProfilesByMNOId(
+        uint mnoId
+    ) external view returns (MNOCommunicationProfile[] memory) {
         MNOCommunicationProfile[]
             memory _targetProfiles = mnoCollectionByOperator[mnoId];
         return _targetProfiles;
