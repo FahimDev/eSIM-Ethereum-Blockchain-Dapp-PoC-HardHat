@@ -1,0 +1,224 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+    "txHash": "0x5b9ff90c65f0071ee38aba5ae96139569dbcc4b2f394aeeec04de6ee9cf6dcd2"
+  },
+  "proxies": [
+    {
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      "txHash": "0xc12f8d50cf54de4e5b13757ea59718ac3d5adda4056ffadc65a266086b4e1e15",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+      "txHash": "0xcd03e7db1adf00b17cb84b33361a7a06d3ac551f08a2160f0dcfdeec947d3def",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+      "txHash": "0xdcb7c4f431e8c8db5822c45ab1bc16ddbf3e418f0b7cdeff3ee626b079ba4c84",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      "txHash": "0xe0b4a0b31e0659bd7e9e81612035ce12a3a4e3ac13b05e7ff3f6f99cdcdb58c7",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      "txHash": "0x429553c4f228bb85ebd041e0edd1c90e1efd94f5999897ca8d567cc5a2881c87",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      "txHash": "0x97b649be62a416221469b127b1d2e63243aed043440c5093337c37f46e203934",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+      "txHash": "0x03945cd90ecdef3b27a60e30cd2e71f76efb9abe35acf7e731068e4b1e1d86b8",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x59b670e9fA9D0A427751Af201D676719a970857b",
+      "txHash": "0xc0c4c5b85e7a6463f0ff9b7570143def13afd7fd6310bb58bcb18705046d38e1",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "c03552e90234a0a1ee4f6c27f6d15de6f63a18e33b581953cdbe0de8eb18381e": {
+      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+      "txHash": "0x5cb914df14c5415c161347d97bbc6842e72d2e292f1f2c21c8f1c3f0c0f0b902",
+      "layout": {
+        "solcVersion": "0.8.3",
+        "storage": [
+          {
+            "label": "title",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_string_storage",
+            "contract": "MobileNetworkOperator",
+            "src": "contracts\\MobileNetworkOperator.sol:11"
+          },
+          {
+            "label": "symbol",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage",
+            "contract": "MobileNetworkOperator",
+            "src": "contracts\\MobileNetworkOperator.sol:12"
+          },
+          {
+            "label": "owner",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "MobileNetworkOperator",
+            "src": "contracts\\MobileNetworkOperator.sol:13"
+          },
+          {
+            "label": "_mnoOrg",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_array(t_struct(MNO)329_storage)dyn_storage",
+            "contract": "MobileNetworkOperator",
+            "src": "contracts\\MobileNetworkOperator.sol:14"
+          },
+          {
+            "label": "mnoCollectionByOperator",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_array(t_struct(MNOCommunicationProfile)308_storage)dyn_storage)",
+            "contract": "MobileNetworkOperator",
+            "src": "contracts\\MobileNetworkOperator.sol:15"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_struct(MNO)329_storage)dyn_storage": {
+            "label": "struct MNO[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(MNOCommunicationProfile)308_storage)dyn_storage": {
+            "label": "struct MNOCommunicationProfile[]",
+            "numberOfBytes": "32"
+          },
+          "t_enum(MNOOperationalStatus)311": {
+            "label": "enum MNOOperationalStatus",
+            "members": [
+              "OPERATIONAL",
+              "INACTIVE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_array(t_struct(MNOCommunicationProfile)308_storage)dyn_storage)": {
+            "label": "mapping(uint256 => struct MNOCommunicationProfile[])",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(MNO)329_storage": {
+            "label": "struct MNO",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "title",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "brandName",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "network",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "prefix",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "mcc",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "mnc",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "status",
+                "type": "t_enum(MNOOperationalStatus)311",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(MNOCommunicationProfile)308_storage": {
+            "label": "struct MNOCommunicationProfile",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "title",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "iccid",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "msisdn",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "imsi",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    }
+  }
+}
