@@ -14,7 +14,11 @@ describe("Mobile-Network-Operator Contract", function () {
     );
     [owner, addressOne, addressTwo] = await ethers.getSigners();
     // Deploying Contract
-    mno = await MobileNetworkOperator.deploy("Grameenphone Ltd.", "GP");
+    mno = await upgrades.deployProxy(
+      MobileNetworkOperator,
+      ["Grameenphone Ltd.", "GP"],
+      { initializer: "initialize" }
+    );
     
     console.log("========Test Account Address========");
     console.log("Address Owner: ", owner.address);

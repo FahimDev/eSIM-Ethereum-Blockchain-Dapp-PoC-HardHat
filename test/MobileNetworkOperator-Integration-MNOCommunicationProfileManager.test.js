@@ -16,7 +16,11 @@ describe("Integration Between MobileNetworkOperator and MNOCommunicationProfileM
         MNOProfile = await ethers.getContractFactory(
         "MNOCommunicationProfileManager"
         );
-        mno = await MobileNetworkOperator.deploy("Grameenphone Ltd.", "GP");
+        mno = await upgrades.deployProxy(
+          MobileNetworkOperator,
+          ["Grameenphone Ltd.", "GP"],
+          { initializer: "initialize" }
+        );
         mnoProfile = await MNOProfile.deploy("Communication Profile Manager", "CPM");
         
         console.log("========Test Account Address========");
