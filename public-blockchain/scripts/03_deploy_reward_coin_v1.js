@@ -1,26 +1,24 @@
 const { ethers, upgrades } = require("hardhat");
 
-// command: npx hardhat run scripts/02_deploy_mobile_network_operator_v1.js --network goerli
+// command: npx hardhat run scripts/03_deploy_reward_coin_v1.js --network goerli
 // verify command: npx hardhat verify --network goerli 0xDeployedContractAddress
 async function main() {
-  // The Transparent Proxy Pattern
-  // Ref: https://blog.openzeppelin.com/the-transparent-proxy-pattern/
+  // The Universal Upgradeable Proxies
+  // Ref: https://eips.ethereum.org/EIPS/eip-1822
+  // Implementation Ref: https://github.com/ishinu/UUPS-Proxy-Pattern-Implementation-Hardhat-/tree/main/scripts
 
-  const MobileNetworkOperator = await ethers.getContractFactory(
-    "MobileNetworkOperator"
-  );
-
-  const mno = await upgrades.deployProxy(
-    MobileNetworkOperator,
-    ["Grameenphone Ltd.", "GP"],
-    { initializer: "initialize" }
-  );
+  const RewardCoin = await ethers.getContractFactory("RewardCoin");
+  console.log("Deploying Universal Upgradeable Proxy Contract...");
+  const rewardCoin = await upgrades.deployProxy(RewardCoin, ["GPCoin", "GP"], {
+    kind: "uups",
+    initializer: "initialize",
+  });
 
   // Checking Timeout and Smart Contract Timeout Status.
-  await mno.deployed();
+  await rewardCoin.deployed();
 
-  console.log("MNO deployed to: ", mno.address);
-  await contractAddressSaver("mnoContract", mno.address);
+  console.log("Reward-Coin deployed to: ", rewardCoin.address);
+  await contractAddressSaver("rewardCoinContract", rewardCoin.address);
 }
 
 main()
@@ -37,7 +35,7 @@ async function contractAddressSaver(key_name, value) {
   // stringify JSON Object
   //var jsonContent = JSON.stringify(jsonData);
   fs.writeFileSync(
-    "transparentProxyContractAddress.json",
+    "../json-log/universalUpgradeableProxyContractAddress.json",
     jsonData,
     "utf8",
     function (err) {

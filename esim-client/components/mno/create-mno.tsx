@@ -5,8 +5,8 @@ import { ethers } from "ethers";
 import styles from "../../styles/RegisterMNO.module.css";
 import { useEffect, useRef, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-const ContractAddress = require("../../../deployedContractAddress.json");
-const SignVerify = require("../../../artifacts/contracts/VerifySignData.sol/VerifySignData.json");
+const ContractAddress = require("../../../json-log/deployedContractAddress.json");
+const SignVerify = require("../../../public-blockchain/artifacts/contracts/VerifySignData.sol/VerifySignData.json");
 
 const CreateMNOComponent: NextPage = () => {
   /**
@@ -479,7 +479,37 @@ const CreateMNOComponent: NextPage = () => {
                   >
                     Terms & Privacy
                   </a>
-                  .
+                  .<br></br>
+                  <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                    Verified Smart Contract Address:
+                    <span className="inline-flex items-center p-1 mr-2 text-sm font-semibold text-blue-800 bg-blue-100 rounded-full dark:bg-gray-700 dark:text-blue-400">
+                      <svg
+                        aria-hidden="true"
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>{" "}
+                      <a
+                        href={
+                          "https://goerli.etherscan.io/address/" +
+                          ContractAddress.genesisContract +
+                          "#code"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {ContractAddress.genesisContract}{" "}
+                      </a>
+                      <span className="sr-only">Verified Smart Contract</span>
+                    </span>
+                  </span>
                 </p>
                 <div className="flex items-center justify-center p-4">
                   <span className="relative inline-flex">

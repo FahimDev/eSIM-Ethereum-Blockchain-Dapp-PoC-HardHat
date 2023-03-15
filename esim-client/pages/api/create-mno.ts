@@ -154,7 +154,7 @@ const signV4Saver = async (signerAddress: string, signTypeV4Payload: any) => {
   };
   let jsonDataStr = JSON.stringify(jsonData);
   fs.writeFile(
-    "../ganacheTestSignV4.json",
+    "../json-log/ganacheTestSignV4.json",
     jsonDataStr,
     "utf8",
     function (err: any) {

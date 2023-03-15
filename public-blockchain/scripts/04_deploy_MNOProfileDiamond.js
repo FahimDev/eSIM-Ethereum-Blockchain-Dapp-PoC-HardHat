@@ -57,7 +57,7 @@ async function contractAddressSaver(key_name, value) {
   // stringify JSON Object
   //var jsonContent = JSON.stringify(jsonData);
   fs.writeFileSync(
-    "mnoProfileDiamondPatternContractAddress.json",
+    "../json-log/mnoProfileDiamondPatternContractAddress.json",
     jsonData,
     "utf8",
     function (err) {
