@@ -4,8 +4,8 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-const ContractAddress = require("../../deployedContractAddress.json");
-const SIMTokenizationJSON = require("../../artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
+const ContractAddress = require("../../json-log/deployedContractAddress.json");
+const SIMTokenizationJSON = require("../../public-blockchain/artifacts/contracts/SIMTokenization.sol/SIMTokenization.json");
 import TechCardsComponent from "../components/dashboard/tech-cards";
 import BannerComponent from "../components/dashboard/banner";
 

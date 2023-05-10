@@ -3,7 +3,7 @@
 
 const { ethers, upgrades } = require("hardhat");
 
-const proxyAddress = require("../universalUpgradeableProxyContractAddress.json");
+const proxyAddress = require("../../json-log/universalUpgradeableProxyContractAddress.json");
 const PROXY = proxyAddress.rewardCoinContract;
 
 async function main() {

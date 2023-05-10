@@ -2,8 +2,9 @@
  * In our hardhat.config.js file we have mentioned
  * one of our networks attribute name as `ganache`.
  * That is why we are using that attribute name in our following
- * command: npx hardhat run ./scripts/deploy.js --network ganache
- * command: npx hardhat run scripts/deploy.js --network goerli
+ * command: npx hardhat run ./scripts/01_deploy_sign_verifier.js --network ganache
+ * command: npx hardhat run scripts/01_deploy_sign_verifier.js --network goerli
+ * verify command: npx hardhat verify --network goerli 0xDeployedContractAddress
  * But we can use multiple network attributes to deploy in different networks also.
  */
  const { ethers } = require("hardhat");
@@ -35,7 +36,7 @@
    var jsonData = `{ "${key_name}" : "${value}" }`;
    // stringify JSON Object
    //var jsonContent = JSON.stringify(jsonData);
-   fs.writeFileSync("deployedContractAddress.json", jsonData, 'utf8', function (err) {
+   fs.writeFileSync("../json-log/deployedContractAddress.json", jsonData, 'utf8', function (err) {
      if (err) {
          console.log("An error occurred while writing JSON Object to File.");
          return console.log(err);
