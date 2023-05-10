@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 
+from core import urls as core_urls
+
 router = DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('core/', include(core_urls, namespace='core')),
 ]
