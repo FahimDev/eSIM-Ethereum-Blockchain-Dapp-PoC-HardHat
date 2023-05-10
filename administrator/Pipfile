@@ -9,6 +9,7 @@ djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 django-debug-toolbar = "*"
+drf-yasg = {extras = ["validation"], version = "*"}
 
 [dev-packages]
 

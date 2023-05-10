@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'debug_toolbar',
+    'drf_yasg',
     # installed apps
     'core.apps.CoreConfig',
 ]
