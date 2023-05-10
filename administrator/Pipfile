@@ -10,6 +10,7 @@ markdown = "*"
 django-filter = "*"
 django-debug-toolbar = "*"
 drf-yasg = {extras = ["validation"], version = "*"}
+django-environ = "*"
 
 [dev-packages]
 
