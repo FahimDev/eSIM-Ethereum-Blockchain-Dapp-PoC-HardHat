@@ -2,6 +2,7 @@ from django.db import models
 from model_utils import FieldTracker
 from model_utils.models import TimeStampedModel
 from django.db import IntegrityError
+from core.services.exceptions import NotDeletable
 
 
 # Create your models here.
@@ -15,4 +16,4 @@ class BaseTimeStampedModel(TimeStampedModel):
         try:
             super().delete(**kwargs)
         except IntegrityError:
-            return 'It has some dependent entry in db'
+            raise NotDeletable
