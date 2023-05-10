@@ -20,6 +20,8 @@ from rest_framework.routers import DefaultRouter
 
 from core import urls as core_urls
 
+from django.conf import settings
+
 router = DefaultRouter()
 
 urlpatterns = [
@@ -27,3 +29,9 @@ urlpatterns = [
     path('', include(router.urls)),
     path('core/', include(core_urls, namespace='core')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
