@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     # installed apps
     'core.apps.CoreConfig',
+    'network_operator.apps.NetworkOperatorConfig'
 ]
 
 mimetypes.add_type("application/javascript", ".js", True)
