@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     # installed apps
     'core.apps.CoreConfig',
-    'network_operator.apps.NetworkOperatorConfig'
+    'network_operator.apps.NetworkOperatorConfig',
+    'public_blockchain_manager.apps.PublicBlockchainManagerConfig'
 ]
 
 mimetypes.add_type("application/javascript", ".js", True)
