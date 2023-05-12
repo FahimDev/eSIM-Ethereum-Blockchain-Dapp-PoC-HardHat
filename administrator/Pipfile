@@ -12,6 +12,7 @@ django-debug-toolbar = "*"
 drf-yasg = {extras = ["validation"], version = "*"}
 django-environ = "*"
 django-model-utils = "*"
+django-countries = "*"
 
 [dev-packages]
 

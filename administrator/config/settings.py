@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_filters',
     'debug_toolbar',
     'drf_yasg',
+    'django_countries',
     # installed apps
     'core.apps.CoreConfig',
     'network_operator.apps.NetworkOperatorConfig',
