@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # installed apps
     'core.apps.CoreConfig',
     'network_operator.apps.NetworkOperatorConfig',
+    'logistics.apps.LogisticsConfig',
     'public_blockchain_manager.apps.PublicBlockchainManagerConfig'
 ]
 

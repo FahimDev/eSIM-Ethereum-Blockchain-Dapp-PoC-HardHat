@@ -21,6 +21,7 @@ from rest_framework.routers import DefaultRouter
 from core import urls as core_urls
 from network_operator import urls as mno_urls
 from public_blockchain_manager import urls as public_web3_urls
+from logistics import urls as logistics_urls
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -50,6 +51,7 @@ urlpatterns = [
     path('api/', include([
         path('core/', include(core_urls, namespace='core')),
         path('network-operator/', include(mno_urls, namespace='network_operator')),
+        path('logistics/', include(logistics_urls, namespace='logistics')),
         path('public-web3-manager/', include(public_web3_urls, namespace='public_blockchain_manager')),
     ])),
     
