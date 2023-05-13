@@ -48,7 +48,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     
-    path('api/', include([
+    path('api/web2/', include([
         path('core/', include(core_urls, namespace='core')),
         path('network-operator/', include(mno_urls, namespace='network_operator')),
         path('logistics/', include(logistics_urls, namespace='logistics')),
