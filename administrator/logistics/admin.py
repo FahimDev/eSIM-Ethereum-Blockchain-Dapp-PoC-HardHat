@@ -12,7 +12,7 @@ class LogisticDetailAdmin(admin.ModelAdmin):
 class TransportDetailAdmin(admin.ModelAdmin):
     list_display = ('model', 'authority_zone', 'registration_number', 'chassis_type', 'capacity', 'capacity_unit', 'owner_list')
     def owner_list(self, obj):
-        return ", ".join([owner.title+"-"+owner.country.name for owner in obj.owners_id.all()])
+        return ", ".join([owner.title+"-"+owner.country.name for owner in obj.owners.all()])
     
     
 @admin.register(DriverDetail)

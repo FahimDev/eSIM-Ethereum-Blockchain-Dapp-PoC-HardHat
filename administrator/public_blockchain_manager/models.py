@@ -35,7 +35,7 @@ class EthSignature(BaseTimeStampedModel):
         (True, 'Accept'),
         (False, 'Reject'),
     ]
-    sign_domain_id = models.ForeignKey(SignTypeData, on_delete=models.CASCADE, related_name='signature_domain')
+    sign_domain = models.ForeignKey(SignTypeData, on_delete=models.CASCADE, related_name='signature_domain')
     signer_address = models.CharField(max_length=42)
     signature = models.CharField(max_length=132, null=True, blank=True)
     message = models.JSONField()

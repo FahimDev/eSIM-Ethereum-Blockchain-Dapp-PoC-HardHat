@@ -43,7 +43,7 @@ class TransportDetail(BaseTimeStampedModel):
     registration_number = models.CharField(max_length=200, null= True, blank= True)
     capacity = models.PositiveIntegerField()
     capacity_unit = models.CharField(max_length=10, choices= CAPACITY_UNIT_CHOICES, default= 'ton')
-    owners_id = models.ManyToManyField(LogisticDetail, null= True, blank= True, related_name= 'transport_owners')
+    owners = models.ManyToManyField(LogisticDetail, null= True, blank= True, related_name= 'transport_owners')
     
     def __str__(self) -> str:
         return f'{self.authority_zone}-{self.registration_number} ⇔ {self.capacity} {self.capacity_unit} | {self.chassis_type}'
@@ -72,7 +72,7 @@ class DriverDetail(BaseTimeStampedModel):
         MaxValueValidator(datetime.now().year)],
         help_text="Use the following format: <YYYY>")
     validity_date = models.DateField()
-    employer_id = models.ForeignKey(LogisticDetail, on_delete= models.SET_NULL, null= True, blank= True, related_name= 'driver_employer')
+    employer = models.ForeignKey(LogisticDetail, on_delete= models.SET_NULL, null= True, blank= True, related_name= 'driver_employer')
     
     def __str__(self) -> str:
         return f'{self.name} ⇔ {self.license_no} | {self.validity_date}'
@@ -89,6 +89,7 @@ class DeliveryBooking(BaseTimeStampedModel):
         ('pick_up','Pick Up'),
         ('on_delivery','On Delivery'),
         ('delivered','Delivered'),
+        ('returned','Returned'),
     ]
     service_provider = models.ForeignKey(LogisticDetail, on_delete= models.SET_NULL, null= True, blank= True, related_name= 'booking_logistics')
     product_batch_id = models.UUIDField(unique=False, editable=True, null= True, blank= True)
@@ -120,7 +121,7 @@ class DeliveryInvoice(BaseTimeStampedModel):
         ('pending','Pending'),
         ('paid','Paid'),
     ]
-    booking_id = models.ForeignKey(DeliveryBooking, on_delete= models.CASCADE, null= True, blank= True, related_name= 'invoice_booking')
+    booking = models.ForeignKey(DeliveryBooking, on_delete= models.CASCADE, null= True, blank= True, related_name= 'invoice_booking')
     assigned_vehicle = models.ForeignKey(TransportDetail, on_delete= models.CASCADE, null= True, blank= True, related_name= 'invoice_transport')
     assigned_driver = models.ForeignKey(DriverDetail, on_delete= models.CASCADE, null= True, blank= True, related_name= 'invoice_driver')
     total_cost = models.PositiveIntegerField()
