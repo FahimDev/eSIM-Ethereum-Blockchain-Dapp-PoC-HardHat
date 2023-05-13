@@ -1,5 +1,5 @@
 from django.contrib import admin
-from logistics.models import LogisticDetail, TransportDetail, DriverDetail
+from logistics.models import LogisticDetail, TransportDetail, DriverDetail, DeliveryBooking, DeliveryInvoice
 
 
 # Register your models here.
@@ -14,6 +14,17 @@ class TransportDetailAdmin(admin.ModelAdmin):
     def owner_list(self, obj):
         return ", ".join([owner.title+"-"+owner.country.name for owner in obj.owners_id.all()])
     
+    
 @admin.register(DriverDetail)
 class DriverDetailAdmin(admin.ModelAdmin):
     list_display = ('name', 'license_no', 'validity_date')
+    
+    
+@admin.register(DeliveryBooking)
+class DeliveryBookingAdmin(admin.ModelAdmin):
+    list_display = ('service_provider', 'sender_contact', 'receiver_contact', 'status')
+        
+
+@admin.register(DeliveryInvoice)
+class DeliveryInvoiceAdmin(admin.ModelAdmin):
+    list_display = ('invoice_id', 'total_cost', 'status')
