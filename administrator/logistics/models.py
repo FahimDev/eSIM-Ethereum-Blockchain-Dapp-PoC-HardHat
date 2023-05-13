@@ -63,7 +63,7 @@ class DriverDetail(BaseTimeStampedModel):
     name = models.CharField(max_length=100)
     license_no = models.CharField(max_length=200, unique= True)
     national_id = models.CharField(max_length=200, unique= True)
-    dob = models.DateField()
+    dob = models.DateField(verbose_name='Date of birth')
     blood_group = models.CharField(
         max_length=10, choices=BLOOD_GROUP_CHOICES)
     issuer_authority = models.CharField(max_length=200)
