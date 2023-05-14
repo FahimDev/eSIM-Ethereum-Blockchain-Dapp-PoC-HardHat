@@ -5,7 +5,7 @@ from network_operator.models import NetworkOperators, CommunicationProfile, Cons
 # Register your models here.
 @admin.register(NetworkOperators)
 class NetworkOperatorsAdmin(admin.ModelAdmin):
-    list_display = ('prefix', 'title')
+    list_display = ('prefix', 'title', 'mnc', 'mcc', 'country')
     
 
 @admin.register(CommunicationProfile)
