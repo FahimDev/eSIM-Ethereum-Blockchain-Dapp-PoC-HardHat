@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'network_operator.apps.NetworkOperatorConfig',
     'logistics.apps.LogisticsConfig',
+    'exim_service.apps.EximServiceConfig',
     'public_blockchain_manager.apps.PublicBlockchainManagerConfig'
 ]
 
