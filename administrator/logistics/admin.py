@@ -17,7 +17,7 @@ class TransportDetailAdmin(admin.ModelAdmin):
     
 @admin.register(DriverDetail)
 class DriverDetailAdmin(admin.ModelAdmin):
-    list_display = ('name', 'license_no', 'validity_date')
+    list_display = ('name', 'license_no', 'validity_date', 'contact_number')
     
     
 @admin.register(DeliveryBooking)

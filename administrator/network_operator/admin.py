@@ -15,7 +15,7 @@ class CommunicationProfileAdmin(admin.ModelAdmin):
     
 @admin.register(ConsumerKYC)
 class ConsumerKYCAdmin(admin.ModelAdmin):
-    list_display = ('name', 'national_id', 'operator_list', 'nationality')
+    list_display = ('name', 'shareable_uuid', 'national_id', 'operator_list', 'nationality')
     
     def operator_list(self, obj):
         return ", ".join([profile.msisdn for profile in obj.mno_profiles.all()])

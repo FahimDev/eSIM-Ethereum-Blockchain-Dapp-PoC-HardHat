@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django_countries.fields import CountryField
 from core.models import BaseTimeStampedModel
@@ -40,6 +41,7 @@ class ConsumerKYC(BaseTimeStampedModel):
     mno_profiles = models.ManyToManyField(CommunicationProfile, blank= True, related_name= 'consumer_profile')
     address = models.TextField(max_length=500, null= True, blank= True)
     nationality = CountryField(default='BD')
+    shareable_uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     
     def __str__(self) -> str:
         return f'{self.name} ⇔ {self.national_id} | {self.nationality}' 

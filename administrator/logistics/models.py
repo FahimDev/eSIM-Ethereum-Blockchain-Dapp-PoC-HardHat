@@ -39,6 +39,8 @@ class TransportDetail(BaseTimeStampedModel):
     model = models.CharField(max_length=100)
     chassis_type = models.CharField(
         max_length=20, choices=VEHICLE_TYPE_CHOICES, default='minivan')
+    chassis_number = models.CharField(max_length=100, null= True, blank= True)
+    engine_number = models.CharField(max_length=100, null= True, blank= True)
     authority_zone = models.CharField(max_length=200, null= True, blank= True)
     registration_number = models.CharField(max_length=200, null= True, blank= True)
     capacity = models.PositiveIntegerField()
@@ -61,9 +63,9 @@ class DriverDetail(BaseTimeStampedModel):
         ('o_neg','O-'),
     ]
     name = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=15, unique= True, null= True, blank= True)
+    contact_kyc = models.UUIDField(unique=True, null= True, blank= True, editable=True)
     license_no = models.CharField(max_length=200, unique= True)
-    national_id = models.CharField(max_length=200, unique= True)
-    dob = models.DateField(verbose_name='Date of birth')
     blood_group = models.CharField(
         max_length=10, choices=BLOOD_GROUP_CHOICES)
     issuer_authority = models.CharField(max_length=200)
